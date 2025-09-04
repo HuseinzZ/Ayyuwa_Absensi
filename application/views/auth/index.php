@@ -21,7 +21,7 @@
       </div>
     <?php endif; ?>
 
-    <form action="<?= base_url(); ?>" method="post">
+    <form action="<?= base_url('auth'); ?>" method="post">
       <div class="mb-3 text-start">
         <label for="username" class="form-label text-secondary fw-bold" style="font-size: 0.9rem;">
           Username <span class="text-danger">*</span>
