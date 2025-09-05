@@ -31,43 +31,43 @@ function is_weekends()
     }
 }
 
-function is_checked_in()
-{
-    date_default_timezone_set('Asia/Jakarta');
-    $ci = get_instance();
-    $username = $ci->session->userdata('username');
-    $today = date('Y-m-d', time());
-    $query = "SELECT FROM_UNIXTIME(`in_time`, '%Y-%m-%d') AS `date`
-              FROM `attendance`
-             WHERE `username` = '$username'
-               AND FROM_UNIXTIME(`in_time`, '%Y-%m-%d') = '$today'
-  ";
-    $ci->db->query($query)->result_array();
-    $rows = $ci->db->affected_rows();
-    if ($rows > 0) {
-        return true;
-    } else {
-        false;
-    }
-}
+// function is_checked_in()
+// {
+//     date_default_timezone_set('Asia/Jakarta');
+//     $ci = get_instance();
+//     $username = $ci->session->userdata('username');
+//     $today = date('Y-m-d', time());
+//     $query = "SELECT FROM_UNIXTIME(`in_time`, '%Y-%m-%d') AS `date`
+//               FROM `attendance`
+//              WHERE `username` = '$username'
+//                AND FROM_UNIXTIME(`in_time`, '%Y-%m-%d') = '$today'
+//   ";
+//     $ci->db->query($query)->result_array();
+//     $rows = $ci->db->affected_rows();
+//     if ($rows > 0) {
+//         return true;
+//     } else {
+//         false;
+//     }
+// }
 
-function is_checked_out()
-{
-    date_default_timezone_set('Asia/Jakarta');
-    $ci = get_instance();
-    $username = $ci->session->userdata('username');
-    $today = date('Y-m-d', time());
-    $query = "SELECT * 
-                FROM `attendance`
-               WHERE (`out_time` != 0)
-                 AND (`out_status` IS NOT NULL OR `out_status` != '')
-                 AND (`username` = '$username')
-                 AND (FROM_UNIXTIME(`in_time`, '%Y-%m-%d') = '$today');";
-    $ci->db->query($query)->result_array();
-    $rows = $ci->db->affected_rows();
-    if ($rows > 0) {
-        return true;
-    } else {
-        return false;
-    }
-}
+// function is_checked_out()
+// {
+//     date_default_timezone_set('Asia/Jakarta');
+//     $ci = get_instance();
+//     $username = $ci->session->userdata('username');
+//     $today = date('Y-m-d', time());
+//     $query = "SELECT * 
+//                 FROM `attendance`
+//                WHERE (`out_time` != 0)
+//                  AND (`out_status` IS NOT NULL OR `out_status` != '')
+//                  AND (`username` = '$username')
+//                  AND (FROM_UNIXTIME(`in_time`, '%Y-%m-%d') = '$today');";
+//     $ci->db->query($query)->result_array();
+//     $rows = $ci->db->affected_rows();
+//     if ($rows > 0) {
+//         return true;
+//     } else {
+//         return false;
+//     }
+// }

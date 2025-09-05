@@ -19,17 +19,17 @@ class Admin extends CI_Controller
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/userguide3/general/urls.html
      */
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    //     is_weekends();
-    //     is_logged_in();
-    //     is_checked_in();
-    //     is_checked_out();
-    //     $this->load->library('form_validation');
-    //     $this->load->model('Public_model');
-    //     $this->load->model('Admin_model');
-    // }
+    public function __construct()
+    {
+        parent::__construct();
+        is_weekends();
+        is_logged_in();
+        // is_checked_in();
+        // is_checked_out();
+        $this->load->library('form_validation');
+        // $this->load->model('Public_model');
+        $this->load->model('Admin_model');
+    }
 
     // Dashboard
     public function index()
@@ -38,17 +38,15 @@ class Admin extends CI_Controller
         // $d['d_list'] = $this->db->query($dquery)->result_array();
         // $squery = "SELECT shift_id AS s_id, COUNT(id) AS qty FROM employee GROUP BY s_id";
         // $d['s_list'] = $this->db->query($squery)->result_array();
-        // // Dashboard
-        // $d['title'] = 'Dashboard';
-        // $d['account'] = $this->Admin_model->getAdmin($this->session->userdata['username']);
-        // $d['display'] = $this->Admin_model->getDataForDashboard();
+        // Dashboard
+        $d['title'] = 'Dashboard';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata['username']);
+        $d['display'] = $this->Admin_model->getDataForDashboard();
 
-        // $this->load->view('templates/dashboard_header', $d);
-        // $this->load->view('templates/sidebar');
-        // $this->load->view('templates/topbar');
-        // $this->load->view('admin/index', $d);
-        // $this->load->view('templates/dashboard_footer');
-
-        echo "hello";
+        $this->load->view('templates/dashboard_header', $d);
+        $this->load->view('templates/sidebar');
+        $this->load->view('templates/topbar');
+        $this->load->view('admin/index', $d);
+        $this->load->view('templates/dashboard_footer');
     }
 }

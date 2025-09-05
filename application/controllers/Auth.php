@@ -3,22 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Auth extends CI_Controller
 {
-
-    /**
-     * Index Page for this controller.
-     *
-     * Maps to the following URL
-     * 		http://example.com/index.php/welcome
-     *	- or -
-     * 		http://example.com/index.php/welcome/index
-     *	- or -
-     * Since this controller is set as the default controller in
-     * config/routes.php, it's displayed at http://example.com/
-     *
-     * So any other public methods not prefixed with an underscore will
-     * map to /index.php/welcome/<method_name>
-     * @see https://codeigniter.com/userguide3/general/urls.html
-     */
     public function __construct()
     {
         parent::__construct();
@@ -37,12 +21,12 @@ class Auth extends CI_Controller
                     break;
             }
         }
-        // Login Page
+
         $d['title'] = 'Login Page';
 
-        // Form Validation
+        // Validasi sederhana
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
-        $this->form_validation->set_rules('password', 'Password', 'required|trim|min_length[6]');
+        $this->form_validation->set_rules('password', 'Password', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/auth_header', $d);
@@ -55,8 +39,8 @@ class Auth extends CI_Controller
 
     private function _login()
     {
-        $username = $this->input->post('username');
-        $password = $this->input->post('password');
+        $username = $this->input->post('username', true);
+        $password = $this->input->post('password', true);
 
         $user = $this->db->get_where('users', ['username' => $username])->row_array();
 
@@ -64,9 +48,10 @@ class Auth extends CI_Controller
             if (password_verify($password, $user['password'])) {
                 $data = [
                     'username' => $user['username'],
-                    'role_id' => $user['role_id']
+                    'role_id'  => $user['role_id']
                 ];
                 $this->session->set_userdata($data);
+
                 switch ($user['role_id']) {
                     case 1:
                         redirect('admin');
@@ -74,29 +59,24 @@ class Auth extends CI_Controller
                     case 2:
                         redirect('profile');
                         break;
+                    default:
+                        redirect('auth/blocked');
+                        break;
                 }
             } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-          Wrong password!</div>');
+                $this->session->set_flashdata('error', 'Wrong password!');
                 redirect('auth');
             }
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-warning" role="alert">
-      Username Not Found</div>');
-            redirect('auth');
-        }
-
-        if ($user) {
-        } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password or Invalid username!</div>');
+            $this->session->set_flashdata('error', 'Username not found!');
             redirect('auth');
         }
     }
+
     public function logout()
     {
-        $this->session->unset_userdata('username');
-        $this->session->unset_userdata('role_id');
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Logged Out!</div>');
+        $this->session->unset_userdata(['username', 'role_id']);
+        $this->session->set_flashdata('success', 'You have been logged out!');
         redirect('auth');
     }
 

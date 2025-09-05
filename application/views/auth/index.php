@@ -21,19 +21,20 @@
       </div>
     <?php endif; ?>
 
+    <!-- Login form -->
     <form action="<?= base_url('auth'); ?>" method="post">
       <div class="mb-3 text-start">
         <label for="username" class="form-label text-secondary fw-bold" style="font-size: 0.9rem;">
           Username <span class="text-danger">*</span>
         </label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="Masukan username" required>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Masukkan username" required>
         <?= form_error('username', '<small class="text-danger pl-3">', '</small>') ?>
       </div>
       <div class="mb-3 text-start">
         <label for="password" class="form-label text-secondary fw-bold" style="font-size: 0.9rem;">
           Password <span class="text-danger">*</span>
         </label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Masukan password" required>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password" required>
         <?= form_error('password', '<small class="text-danger pl-3">', '</small>') ?>
       </div>
       <div class="d-grid mt-4">
