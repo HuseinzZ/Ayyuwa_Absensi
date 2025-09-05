@@ -29,7 +29,7 @@
 
             $querySubMenu = "SELECT * FROM `user_submenu`
                                  WHERE `menu_id` = $menuId 
-                                   AND `is_active` = 1";
+                                   AND `is_active` = 1 ORDER BY `title` ASC;";
 
             $subMenu = $this->db->query($querySubMenu)->result_array();
 

@@ -24,47 +24,52 @@ class Admin_model extends CI_Model
         $d['shift'] = $this->db->get('shift')->result_array();
         // menampilkan jumlah data dari tabel shift
         $d['c_shift'] = $this->db->get('shift')->num_rows();
+
         // $d['location'] = $this->db->get('location')->result_array();
         // $d['c_location'] = $this->db->get('location')->num_rows();
+
         // menampilkan data dari tabel employee
         $d['employee'] = $this->db->get('employee')->result_array();
         // menampilkan jumlah data dari tabel employee
         $d['c_employee'] = $this->db->get('employee')->num_rows();
-        // $d['department'] = $this->db->get('department')->result_array();
-        // $d['c_department'] = $this->db->get('department')->num_rows();
-        // menampilkan jumlah data tabel users
+
+        $d['potition'] = $this->db->get('potition')->result_array();
+        $d['c_potition'] = $this->db->get('potition')->num_rows();
+
+        // menampilkan data tabel users
         $d['users'] = $this->db->get('users')->result_array();
+        // menampilkan jumlah data tabel users
         $d['c_users'] = $this->db->get('users')->num_rows();
 
         return $d;
     }
 
-    // public function getDepartment()
-    // {
-    //     $query = "SELECT  department.name AS d_name,
-    //                   department.id AS d_id,
-    //                   COUNT(employee_department.employee_id) AS d_quantity
-    //             FROM  department
-    //             JOIN  employee_department
-    //               ON  department.id = employee_department.department_id
-    //         GROUP BY  d_name
-    // ";
-    //     return $this->db->query($query)->result_array();
-    // }
+    public function getPotition()
+    {
+        $query = "SELECT  potition.id AS p_id,
+                      potition.name AS p_name,
+                      COUNT(employee_department.employee_id) AS d_quantity
+                FROM  potition
+                JOIN  employee_potition
+                  ON  potition.id = employee_department.potition_id
+            GROUP BY  d_name
+    ";
+        return $this->db->query($query)->result_array();
+    }
 
-    // public function getDepartmentEmployees($d_id)
-    // {
-    //     $query = "SELECT  employee_department.employee_id AS e_id,
-    //                   employee.name AS e_name,
-    //                   employee.image AS e_image,
-    //                   employee.hire_date AS e_hdate
-    //             FROM  employee_department
-    //       INNER JOIN  employee
-    //               ON  employee_department.employee_id = employee.id
-    //            WHERE  employee_department.department_id = '$d_id'
-    // ";
-    //     return $this->db->query($query)->result_array();
-    // }
+    public function getPotitionEmployee($d_id)
+    {
+        $query = "SELECT  employee_potition.employee_id AS e_id,
+                      employee.name AS e_name,
+                      employee.image AS e_image,
+                      employee.hire_date AS e_hdate
+                FROM  employee_potition
+          INNER JOIN  employee
+                  ON  employee_potition.employee_id = employee.id
+               WHERE  employee_potition.department_id = '$p_id'
+    ";
+        return $this->db->query($query)->result_array();
+    }
 
     // public function getEmployeeStatsbyCurrent($e_id)
     // {
