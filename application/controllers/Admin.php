@@ -29,6 +29,7 @@ class Admin extends CI_Controller
         $this->load->library('form_validation');
         // $this->load->model('Public_model');
         $this->load->model('Admin_model');
+        $this->load->model('Dashboard_model');
     }
 
     // Dashboard
@@ -41,7 +42,7 @@ class Admin extends CI_Controller
         // Dashboard
         $d['title'] = 'Dashboard';
         $d['account'] = $this->Admin_model->getAdmin($this->session->userdata['username']);
-        $d['display'] = $this->Admin_model->getDataForDashboard();
+        $d['display'] = $this->Dashboard_model->getDataForDashboard();
 
         $this->load->view('templates/dashboard_header', $d);
         $this->load->view('templates/sidebar');

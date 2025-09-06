@@ -22,6 +22,7 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
+        $this->load->model('Auth_model');
     }
 
     public function index()
@@ -39,7 +40,6 @@ class Auth extends CI_Controller
 
         $d['title'] = 'Login Page';
 
-        // Validasi sederhana
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
 
@@ -57,11 +57,13 @@ class Auth extends CI_Controller
         $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
 
-        $user = $this->db->get_where('users', ['username' => $username])->row_array();
+        // Panggil model
+        $user = $this->Auth_model->getUserByUsername($username);
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
                 $data = [
+                    'id' => $user['id'],
                     'username' => $user['username'],
                     'role_id'  => $user['role_id']
                 ];

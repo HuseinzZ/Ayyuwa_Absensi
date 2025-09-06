@@ -26,94 +26,83 @@ class Master extends CI_Controller
         $this->load->library('form_validation');
         // $this->load->model('Public_model');
         $this->load->model('Admin_model');
+        $this->load->model('Potition_model');
     }
+
     public function index()
     {
-        // Department Data
-        $d['title'] = 'Potition';
-        $d['potition'] = $this->db->get('potition')->result_array();
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata['username']);
+        $d['title']    = 'Potition';
+        $d['account']  = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['potition'] = $this->Potition_model->getAll();
 
         $this->load->view('templates/table_header', $d);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar');
-        $this->load->view('master/potition/index', $d); // Department Page
+        $this->load->view('master/potition/index', $d);
         $this->load->view('templates/table_footer');
     }
-    public function a_potition()
-    {
-        // Add Department
-        $d['title'] = 'Potition';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata['username']);
-        // Form Validation
-        $this->form_validation->set_rules('d_id', 'Potition ID', 'required|trim|exact_length[3]|alpha');
-        $this->form_validation->set_rules('d_name', 'Potition Name', 'required|trim');
 
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $d);
-            $this->load->view('templates/sidebar');
-            $this->load->view('templates/topbar');
-            $this->load->view('master/department/a_dept', $d); // Add Department Page
-            $this->load->view('templates/footer');
-            // } else {
-            //     $this->_addPotition();
-            // }
-        }
-    }
-
-    // private function _addPotition()
+    // // Tambah potition
+    // public function add()
     // {
-    //     $data = [
-    //         'id' => $this->input->post('d_id'),
-    //         'name' => $this->input->post('d_name')
-    //     ];
+    //     $d['title']   = 'Add Potition';
+    //     $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
 
-    //     $checkId = $this->db->get_where('department', ['id' => $data['id']])->num_rows();
-    //     if ($checkId > 0) {
-    //         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-    //   Failed to add, ID used!</div>');
-    //     } else {
-    //         $this->db->insert('department', $data);
-    //         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-    //     Successfully added a new department!</div>');
-    //     }
-    //     redirect('master');
-    // }
-
-    // public function e_dept($d_id)
-    // {
-    //     // Edit Department
-    //     $d['title'] = 'Department';
-    //     $d['d_old'] = $this->db->get_where('department', ['id' => $d_id])->row_array();
-    //     $d['account'] = $this->Admin_model->getAdmin($this->session->userdata['username']);
-    //     // Form Validation
-    //     $this->form_validation->set_rules('d_name', 'Department Name', 'required|trim');
+    //     $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric');
+    //     $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
 
     //     if ($this->form_validation->run() == false) {
-    //         $this->load->view('templates/header', $d);
+    //         $this->load->view('templates/table_header', $d);
     //         $this->load->view('templates/sidebar');
     //         $this->load->view('templates/topbar');
-    //         $this->load->view('master/department/e_dept', $d); // Edit Department Page
-    //         $this->load->view('templates/footer');
+    //         $this->load->view('master/potition/add', $d);
+    //         $this->load->view('templates/table_footer');
     //     } else {
-    //         $name = $this->input->post('d_name');
-    //         $this->_editDept($d_id, $name);
+    //         $data = [
+    //             'id'   => $this->input->post('p_id', true),
+    //             'name' => $this->input->post('p_name', true)
+    //         ];
+
+    //         // Cek duplikat ID
+    //         $exists = $this->Potition_model->getById($data['id']);
+    //         if ($exists) {
+    //             $this->session->set_flashdata('message', '<div class="alert alert-danger">ID sudah digunakan!</div>');
+    //         } else {
+    //             $this->Potition_model->insert($data);
+    //             $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil ditambahkan!</div>');
+    //         }
+    //         redirect('potition');
     //     }
     // }
-    // private function _editDept($d_id, $name)
+
+    // // Edit potition
+    // public function edit($id)
     // {
-    //     $data = ['name' => $name];
-    //     $this->db->update('department', $data, ['id' => $d_id]);
-    //     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-    //     Successfully edited a department!</div>');
-    //     redirect('master');
+    //     $d['title']   = 'Edit Potition';
+    //     $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+    //     $d['potition'] = $this->Potition_model->getById($id);
+
+    //     $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
+
+    //     if ($this->form_validation->run() == false) {
+    //         $this->load->view('templates/table_header', $d);
+    //         $this->load->view('templates/sidebar');
+    //         $this->load->view('templates/topbar');
+    //         $this->load->view('master/potition/edit', $d);
+    //         $this->load->view('templates/table_footer');
+    //     } else {
+    //         $data = ['name' => $this->input->post('p_name', true)];
+    //         $this->Potition_model->update($id, $data);
+    //         $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil diupdate!</div>');
+    //         redirect('potition');
+    //     }
     // }
-    // public function d_dept($d_id)
+
+    // // Hapus potition
+    // public function delete($id)
     // {
-    //     $this->db->delete('department', ['id' => $d_id]);
-    //     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-    //     Successfully deleted a department!</div>');
-    //     redirect('master');
+    //     $this->Potition_model->delete($id);
+    //     $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil dihapus!</div>');
+    //     redirect('potition');
     // }
-    // // End of department
 }
