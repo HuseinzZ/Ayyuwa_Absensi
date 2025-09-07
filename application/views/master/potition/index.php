@@ -4,8 +4,8 @@
             <!-- Data Table Department-->
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-dark">DataTables Department</h6>
-                    <a href="<?= base_url('master/a_dept'); ?>" class="btn btn-primary btn-icon-split">
+                    <h6 class="m-0 font-weight-bold text-dark">DataTables Potition</h6>
+                    <a href="<?= base_url('master'); ?>" class="btn btn-primary btn-icon-split">
                         <span class="icon text-white">
                             <i class="fas fa-plus-circle"></i>
                         </span>
@@ -19,7 +19,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>ID</th>
-                                    <th>Department Name</th>
+                                    <th>Potition Name</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -34,12 +34,12 @@
                                         <td class="align-middle"><?= $ptt['id']; ?></td>
                                         <td class="align-middle"><?= $ptt['name']; ?></td>
                                         <td class="align-middle text-center">
-                                            <a href="<?= base_url('master/e_dept/') . $ptt['id'] ?>" class="btn btn-warning btn-circle">
+                                            <a href="<?= base_url('master/edit/') . $ptt['id'] ?>" class="btn btn-warning btn-circle">
                                                 <span class="icon text-white" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </a> |
-                                            <a href="<?= base_url('master/d_dept/') . $ptt['id'] ?>" class="btn btn-danger btn-circle" onclick="return confirm('Deleted Department will lost forever. Still want to delete?')">
+                                            <a href="<?= base_url('master/delete/') . $ptt['id'] ?>" class="btn btn-danger btn-circle" onclick="return confirm('Deleted Department will lost forever. Still want to delete?')">
                                                 <span class="icon text-white" title="Delete">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </span>
