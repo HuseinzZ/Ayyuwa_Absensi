@@ -19,52 +19,22 @@ class Master extends CI_Controller
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/userguide3/general/urls.html
      */
+
     public function __construct()
     {
         parent::__construct();
         is_logged_in();
         $this->load->library('form_validation');
-        // $this->load->model('Public_model');
         $this->load->model('Admin_model');
         $this->load->model('Employee_model');
         $this->load->model('Potition_model');
     }
 
-    // Master Employee
-    public function index()
-    {
-        // data
-        $d['title'] = 'Employee';
-        $d['employee'] = $this->Employee_model->getAll();
-        $d['potition'] = $this->Potition_model->getAll();
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
-
-        // Form Validation
-        $this->form_validation->set_rules('e_name', 'Employee Name', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
-        $this->form_validation->set_rules('p_id', 'Potition', 'required|trim');
-        $this->form_validation->set_rules('e_gender', 'Gender', 'required');
-        $this->form_validation->set_rules('e_birth_date', 'Birth Date', 'required|trim');
-        $this->form_validation->set_rules('e_hire_date', 'Hire Date', 'required|trim');
-
-        if ($this->form_validation->run() == false) {
-            $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
-            $this->load->view('templates/topbar');
-            $this->load->view('master/employee/index', $d); // Add Employee Page
-            $this->load->view('templates/table_footer');
-            // } else {
-            //     $this->_addEmployee();
-            // }
-        }
-    }
-
     // Master potition
     public function potition()
     {
-        // data
-        $d['title']    = 'Potition';
-        $d['account']  = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['title'] = 'Potition';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
         $d['potition'] = $this->Potition_model->getAll();
 
         $this->load->view('templates/table_header', $d);
@@ -74,67 +44,68 @@ class Master extends CI_Controller
         $this->load->view('templates/table_footer');
     }
 
-    // // Tambah potition
-    // public function add()
-    // {
-    //     $d['title']   = 'Add Potition';
-    //     $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+    // Tambah potition
+    public function a_potition()
+    {
+        $d['title'] = 'Add Potition';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
 
-    //     $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric');
-    //     $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
+        $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric|max_length[3]');
+        $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
 
-    //     if ($this->form_validation->run() == false) {
-    //         $this->load->view('templates/table_header', $d);
-    //         $this->load->view('templates/sidebar');
-    //         $this->load->view('templates/topbar');
-    //         $this->load->view('master/potition/add', $d);
-    //         $this->load->view('templates/table_footer');
-    //     } else {
-    //         $data = [
-    //             'id'   => $this->input->post('p_id', true),
-    //             'name' => $this->input->post('p_name', true)
-    //         ];
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar');
+            $this->load->view('master/potition/a_potition', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $data = [
+                'id' => $this->input->post('p_id', true),
+                'name' => $this->input->post('p_name', true)
+            ];
 
-    //         // Cek duplikat ID
-    //         $exists = $this->Potition_model->getById($data['id']);
-    //         if ($exists) {
-    //             $this->session->set_flashdata('message', '<div class="alert alert-danger">ID sudah digunakan!</div>');
-    //         } else {
-    //             $this->Potition_model->insert($data);
-    //             $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil ditambahkan!</div>');
-    //         }
-    //         redirect('potition');
-    //     }
-    // }
+            $exists = $this->Potition_model->getById($data['id']);
+            if ($exists) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger">ID sudah digunakan!</div>');
+                redirect('master/a_potition');
+            } else {
+                $this->Potition_model->insert($data);
+                $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil ditambahkan!</div>');
+                redirect('master/potition');
+            }
+        }
+    }
 
-    // // Edit potition
-    // public function edit($id)
-    // {
-    //     $d['title']   = 'Edit Potition';
-    //     $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
-    //     $d['potition'] = $this->Potition_model->getById($id);
+    // Edit potition
+    public function e_potition($id)
+    {
+        $d['title'] = 'Edit Potition';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        // Mengubah nama variabel agar konsisten
+        $d['old_potition'] = $this->Potition_model->getById($id);
 
-    //     $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
+        $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
 
-    //     if ($this->form_validation->run() == false) {
-    //         $this->load->view('templates/table_header', $d);
-    //         $this->load->view('templates/sidebar');
-    //         $this->load->view('templates/topbar');
-    //         $this->load->view('master/potition/edit', $d);
-    //         $this->load->view('templates/table_footer');
-    //     } else {
-    //         $data = ['name' => $this->input->post('p_name', true)];
-    //         $this->Potition_model->update($id, $data);
-    //         $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil diupdate!</div>');
-    //         redirect('potition');
-    //     }
-    // }
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar');
+            $this->load->view('master/potition/e_potition', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $data = ['name' => $this->input->post('p_name', true)];
+            $this->Potition_model->update($id, $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil diupdate!</div>');
+            redirect('master/potition');
+        }
+    }
 
-    // // Hapus potition
-    // public function delete($id)
-    // {
-    //     $this->Potition_model->delete($id);
-    //     $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil dihapus!</div>');
-    //     redirect('potition');
-    // }
+    // Hapus potition
+    public function d_potition($id)
+    {
+        $this->Potition_model->delete($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil dihapus!</div>');
+        redirect('master/potition');
+    }
 }

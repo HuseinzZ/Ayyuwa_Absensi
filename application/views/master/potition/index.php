@@ -1,15 +1,15 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <!-- Data Table Department-->
+            <!-- Data Table Potition-->
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-dark">DataTables Potition</h6>
-                    <a href="<?= base_url('master'); ?>" class="btn btn-primary btn-icon-split">
+                    <a href="<?= base_url('master/a_potition'); ?>" class="btn btn-primary btn-icon-split btn-sm">
                         <span class="icon text-white">
                             <i class="fas fa-plus-circle"></i>
                         </span>
-                        <span class="text">Add</span>
+                        <span class="text">Add new potition</span>
                     </a>
                 </div>
                 <div class="card-body">
@@ -34,16 +34,19 @@
                                         <td class="align-middle"><?= $ptt['id']; ?></td>
                                         <td class="align-middle"><?= $ptt['name']; ?></td>
                                         <td class="align-middle text-center">
-                                            <a href="<?= base_url('master/edit/') . $ptt['id'] ?>" class="btn btn-warning btn-circle">
-                                                <span class="icon text-white" title="Edit">
+                                            <a href="<?= base_url('master/e_potition/') . $ptt['id'] ?>" class="btn btn-warning btn-icon-split btn-sm">
+                                                <span class="icon text-white">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
+                                                <span class="text">Edit</span>
                                             </a> |
-                                            <a href="<?= base_url('master/delete/') . $ptt['id'] ?>" class="btn btn-danger btn-circle" onclick="return confirm('Deleted Department will lost forever. Still want to delete?')">
-                                                <span class="icon text-white" title="Delete">
+                                            <a href="<?= base_url('master/d_potition/') . $ptt['id'] ?>" class="btn btn-danger btn-icon-split btn-sm ml-2" onclick="return confirm('Deleted Potition will lost forever. Still want to delete?')">
+                                                <span class="icon text-white">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </span>
+                                                <span class="text">Delete</span>
                                             </a>
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

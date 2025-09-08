@@ -3,7 +3,10 @@ class Employee_model extends CI_Model
 {
     public function getAll()
     {
-        return $this->db->get('employee')->result_array();
+        $this->db->select('employee.*, potition.name as potition_name');
+        $this->db->from('employee');
+        $this->db->join('potition', 'potition.id = employee.potition_id');
+        return $this->db->get()->result_array();
     }
 
     public function getById($id)
