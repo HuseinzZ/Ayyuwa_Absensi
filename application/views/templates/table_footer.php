@@ -55,6 +55,16 @@
       <!-- Page level custom scripts -->
       <script src="<?= base_url('assets/'); ?>js/demo/datatables-demo.js"></script>
 
+      <script>
+          // This script handles the display of the file name on the custom file input.
+          $('.custom-file-input').on('change', function() {
+              // Get the file name
+              let fileName = $(this).val().split('\\').pop();
+              // Update the label's text with the file name
+              $(this).next('.custom-file-label').html(fileName);
+          });
+      </script>
+
       </body>
 
       </html>

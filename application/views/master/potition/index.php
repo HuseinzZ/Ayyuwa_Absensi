@@ -38,13 +38,11 @@
                                                 <span class="icon text-white">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
-                                                <span class="text">Edit</span>
-                                            </a> |
+                                            </a>
                                             <a href="<?= base_url('master/d_potition/') . $ptt['id'] ?>" class="btn btn-danger btn-icon-split btn-sm ml-2" onclick="return confirm('Deleted Potition will lost forever. Still want to delete?')">
                                                 <span class="icon text-white">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </span>
-                                                <span class="text">Delete</span>
                                             </a>
 
                                         </td>

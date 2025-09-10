@@ -22,21 +22,20 @@
                                 <?= form_error('p_name', '<small class="text-danger pl-3">', '</small>') ?>
                             </div>
                         </div>
-                        <div class="form-group row justify-content-center">
-                            <div class="col-sm-8 text-center">
-                                <a href="<?= base_url('master/potition'); ?>" class="btn btn-secondary btn-icon-split mt-3">
-                                    <span class="icon text-white">
-                                        <i class="fas fa-arrow-left"></i>
-                                    </span>
-                                    <span class="text">Back</span>
-                                </a>
-                                <button type="submit" class="btn btn-primary btn-icon-split mt-3 ml-2">
-                                    <span class="icon text-white">
-                                        <i class="fas fa-save"></i>
-                                    </span>
-                                    <span class="text">Save</span>
-                                </button>
-                            </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <a href="<?= base_url('master/potition'); ?>" class="btn btn-secondary btn-icon-split">
+                                <span class="icon text-white">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                <span class="text">Back</span>
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-icon-split">
+                                <span class="icon text-white">
+                                    <i class="fas fa-save"></i>
+                                </span>
+                                <span class="text">Add</span>
+                            </button>
                         </div>
                     </form>
                 </div>

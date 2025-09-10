@@ -30,6 +30,153 @@ class Master extends CI_Controller
         $this->load->model('Potition_model');
     }
 
+    // Master employee
+    public function index()
+    {
+        $d['title'] = 'Employee';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['employee'] = $this->Employee_model->getAll();
+
+        $this->load->view('templates/table_header', $d);
+        $this->load->view('templates/sidebar');
+        $this->load->view('templates/topbar');
+        $this->load->view('master/employee/index', $d);
+        $this->load->view('templates/table_footer');
+    }
+
+    // Add employee
+    public function a_employee()
+    {
+        $d['title'] = 'Add Employee';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['potitions'] = $this->Potition_model->getAll();
+
+        // Aturan validasi
+        $this->form_validation->set_rules('emp_id', 'ID', 'required|trim|is_unique[employee.id]');
+        $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
+        $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email|is_unique[employee.email]');
+        $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
+        $this->form_validation->set_rules('emp_potition_id', 'Potition', 'required');
+        $this->form_validation->set_rules('emp_birth_date', 'Date of Birth', 'required');
+        $this->form_validation->set_rules('emp_hire_date', 'Hire Date', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar');
+            $this->load->view('master/employee/a_employee', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $data = [
+                'id'          => $this->input->post('emp_id', true),
+                'name'        => $this->input->post('emp_name', true),
+                'email'       => $this->input->post('emp_email', true),
+                'gender'      => $this->input->post('emp_gender', true),
+                'potition_id' => $this->input->post('emp_potition_id', true),
+                'birth_date'  => $this->input->post('emp_birth_date', true),
+                'hire_date'   => $this->input->post('emp_hire_date', true),
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s'),
+                'image'       => 'default.jpg'
+            ];
+
+            // Upload image
+            $upload_image = $_FILES['emp_image']['name'];
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                $config['max_size']      = '2048';
+                $config['upload_path']   = './assets/img/profile/';
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('emp_image')) {
+                    $new_image = $this->upload->data('file_name');
+                    $data['image'] = $new_image;
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $this->Employee_model->insert($data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil ditambahkan!</div>');
+            redirect('master/index');
+        }
+    }
+
+    // Edit employee
+    public function e_employee($id)
+    {
+        $d['title'] = 'Edit Employee';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['employee'] = $this->Employee_model->getById($id);
+        $d['potitions'] = $this->Potition_model->getAll();
+
+        // Aturan validasi
+        $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
+        $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email');
+        $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
+        $this->form_validation->set_rules('emp_potition_id', 'Potition', 'required');
+        $this->form_validation->set_rules('emp_birth_date', 'Date of Birth', 'required');
+        $this->form_validation->set_rules('emp_hire_date', 'Hire Date', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar');
+            $this->load->view('master/employee/e_employee', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $data = [
+                'name'        => $this->input->post('emp_name', true),
+                'email'       => $this->input->post('emp_email', true),
+                'gender'      => $this->input->post('emp_gender', true),
+                'potition_id' => $this->input->post('emp_potition_id', true),
+                'birth_date'  => $this->input->post('emp_birth_date', true),
+                'hire_date'   => $this->input->post('emp_hire_date', true),
+                'updated_at'  => date('Y-m-d H:i:s')
+            ];
+
+            // Upload image baru
+            $upload_image = $_FILES['emp_image']['name'];
+            if ($upload_image) {
+                $config['allowed_types'] = 'gif|jpg|png|jpeg';
+                $config['max_size']      = '2048';
+                $config['upload_path']   = './assets/img/profile/';
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('emp_image')) {
+                    // Hapus gambar lama
+                    $old_image = $d['employee']['image'];
+                    if ($old_image && $old_image != 'default.jpg') {
+                        unlink(FCPATH . 'assets/img/profile/' . $old_image);
+                    }
+
+                    $new_image = $this->upload->data('file_name');
+                    $data['image'] = $new_image;
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            }
+
+            $this->Employee_model->update($id, $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil diupdate!</div>');
+            redirect('master/index');
+        }
+    }
+
+
+    // Delete employee
+    public function d_employee($id)
+    {
+        $employee_data = $this->Employee_model->getById($id);
+        if ($employee_data['image'] != 'default.jpg') {
+            unlink(FCPATH . 'assets/img/profile/' . $employee_data['image']);
+        }
+
+        $this->Employee_model->delete($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil dihapus!</div>');
+        redirect('master/index');
+    }
+
     // Master potition
     public function potition()
     {
@@ -44,7 +191,7 @@ class Master extends CI_Controller
         $this->load->view('templates/table_footer');
     }
 
-    // Tambah potition
+    // Add potition
     public function a_potition()
     {
         $d['title'] = 'Add Potition';
@@ -82,7 +229,6 @@ class Master extends CI_Controller
     {
         $d['title'] = 'Edit Potition';
         $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
-        // Mengubah nama variabel agar konsisten
         $d['old_potition'] = $this->Potition_model->getById($id);
 
         $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
@@ -101,7 +247,7 @@ class Master extends CI_Controller
         }
     }
 
-    // Hapus potition
+    // Delete potition
     public function d_potition($id)
     {
         $this->Potition_model->delete($id);
