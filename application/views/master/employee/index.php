@@ -41,9 +41,9 @@
                                                                     } else {
                                                                         echo 'Female';
                                                                     }; ?></td>
-                                        <td class="text-center"><img src="<?= base_url('assets/img/profile/') . $emp['image']; ?>" style="width: 55px; height:55px" class="img-rounded"></td>
-                                        <td class="align-middle"><?= $emp['birth_date']; ?></td>
-                                        <td class="align-middle"><?= $emp['hire_date']; ?></td>
+                                        <td class="text-center"><img src="<?= base_url('assets/img/profile/') . $emp['image']; ?>" style="width: 70px; height: 70px; object-fit: cover; object-position: top;" class="img-rounded"></td>
+                                        <td class="align-middle"><?= date('d-m-Y', strtotime($emp['birth_date'])); ?></td>
+                                        <td class="align-middle"><?= date('d-m-Y', strtotime($emp['hire_date'])); ?></td>
                                         <td class="align-middle text-center">
                                             <a href="<?= base_url('master/e_employee/') . $emp['id'] ?>" class="btn btn-warning btn-icon-split btn-sm">
                                                 <span class="icon text-white">

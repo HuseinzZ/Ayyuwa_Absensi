@@ -63,7 +63,7 @@
                     <div class="form-group">
                         <label>Current Image</label>
                         <br>
-                        <img src="<?= base_url('assets/img/profile/') . $employee['image']; ?>" class="img-thumbnail mb-2" style="height: 250px; width: 100%; object-fit: cover;">
+                        <img src="<?= base_url('assets/img/profile/') . $employee['image']; ?>" class="img-thumbnail mb-2" style="height: 250px; width: 100%; object-fit: cover; object-position: top;">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="emp_image" name="emp_image">
                             <label class="custom-file-label" for="emp_image">Choose new file</label>

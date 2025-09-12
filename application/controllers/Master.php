@@ -26,8 +26,10 @@ class Master extends CI_Controller
         is_logged_in();
         $this->load->library('form_validation');
         $this->load->model('Admin_model');
+        // $this->load->model('Profile_model');
         $this->load->model('Employee_model');
         $this->load->model('Potition_model');
+        $this->load->model('Users_model');
     }
 
     // Master employee
@@ -253,5 +255,96 @@ class Master extends CI_Controller
         $this->Potition_model->delete($id);
         $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil dihapus!</div>');
         redirect('master/potition');
+    }
+
+    // Master users
+    public function users()
+    {
+        $d['title'] = 'Users';
+        $d['data'] = $this->Users_model->getAllUsersWithEmployeeData();
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+
+        $this->load->view('templates/table_header', $d);
+        $this->load->view('templates/sidebar');
+        $this->load->view('templates/topbar');
+        $this->load->view('master/users/index', $d);
+        $this->load->view('templates/table_footer');
+    }
+
+    // Add users
+    public function a_users($id, $potition_id)
+    {
+        $d['title'] = 'Create Account';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['employee_id'] = $id;
+        $d['potition_id'] = $potition_id;
+
+        $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[8]|matches[u_password2]');
+        $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar');
+            $this->load->view('master/users/a_users', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $username_auto = $potition_id . $id;
+
+            $data = [
+                'username'      => $username_auto,
+                'password'      => password_hash($this->input->post('u_password'), PASSWORD_DEFAULT),
+                'employee_id'   => $id,
+                'role_id'       => ($potition_id === 'CEO') ? 1 : 2,
+                'created_at'    => date('Y-m-d H:i:s'),
+                'updated_at'    => date('Y-m-d H:i:s')
+            ];
+
+            $existing_user = $this->Users_model->getByUsername($username_auto);
+            if ($existing_user) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger">Username sudah ada. Harap hubungi administrator.</div>');
+                redirect('master/users');
+            }
+
+            $this->Users_model->insert($data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">User berhasil ditambahkan!</div>');
+            redirect('master/users');
+        }
+    }
+
+    // Edit users
+    public function e_users($username)
+    {
+        $d['title'] = 'Edit Account';
+        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['user'] = $this->Users_model->getByUsername($username);
+
+        $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[3]|matches[u_password2]');
+        $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar');
+            $this->load->view('templates/topbar');
+            $this->load->view('master/users/e_users', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $data = [
+                'password'   => password_hash($this->input->post('u_password'), PASSWORD_DEFAULT),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            $this->Users_model->updateByUsername($username, $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">User berhasil diupdate!</div>');
+            redirect('master/users');
+        }
+    }
+
+    // Delete users
+    public function d_users($username)
+    {
+        $this->Users_model->deleteByUsername($username);
+        $this->session->set_flashdata('message', '<div class="alert alert-success">User berhasil dihapus!</div>');
+        redirect('master/users');
     }
 }
