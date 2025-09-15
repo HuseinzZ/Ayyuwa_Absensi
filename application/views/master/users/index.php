@@ -36,12 +36,12 @@
                                                 <?= $dt['u_username']; ?>
                                             </td>
                                             <td class="text-center align-middle">
-                                                <a href="<?= base_url('master/e_users/') . $dt['u_username'] ?>" class="btn btn-warning btn-circle ">
+                                                <a href="<?= base_url('master/e_users/') . $dt['u_username'] ?>" class="btn btn-warning btn-icon-split btn-sm ">
                                                     <span class="icon text-white" title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </span>
-                                                </a> |
-                                                <a href="<?= base_url('master/d_users/') . $dt['u_username'] ?>" class="btn btn-danger btn-circle" onclick="return confirm('Deleted Users will lost forever. Still want to delete?')">
+                                                </a>
+                                                <a href="<?= base_url('master/d_users/') . $dt['u_username'] ?>" class="btn btn-danger btn-icon-split btn-sm ml-2" onclick="return confirm('Deleted Users will lost forever. Still want to delete?')">
                                                     <span class="icon text-white" title="Delete">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </span>
@@ -52,12 +52,12 @@
                                                 <a href="<?= base_url('master/a_users/') . $dt['e_id'] . '/' . $dt['d_id']; ?>" class="btn btn-primary">Create Account</a>
                                             </td>
                                             <td class="text-center align-middle">
-                                                <button class="btn btn-warning btn-circle" disabled>
+                                                <button class="btn btn-warning btn-icon-split btn-sm" disabled>
                                                     <span class="icon text-white" title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </span>
-                                                </button> |
-                                                <button class="btn btn-danger btn-circle" disabled>
+                                                </button>
+                                                <button class="btn btn-danger btn-icon-split btn-sm ml-2" disabled>
                                                     <span class="icon text-white" title="Delete">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </span>
