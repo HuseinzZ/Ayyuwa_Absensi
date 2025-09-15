@@ -38,7 +38,7 @@ class Auth extends CI_Controller
             }
         }
 
-        $d['title'] = 'Login Page';
+        $d['title'] = 'Login';
 
         $this->form_validation->set_rules('username', 'Username', 'required|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');

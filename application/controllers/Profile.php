@@ -1,9 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin extends CI_Controller
+class Profile extends CI_Controller
 {
-
     /**
      * Index Page for this controller.
      *
@@ -22,27 +21,19 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // is_weekends();
         is_logged_in();
-        // is_checked_in();
-        // is_checked_out();
-        $this->load->library('form_validation');
         $this->load->model('Users_model');
-        $this->load->model('Dashboard_model');
     }
 
-    // Dashboard
     public function index()
     {
-        // Dashboard
-        $d['title'] = 'Dashboard';
-        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
-        $d['display'] = $this->Dashboard_model->getDataForDashboard();
+        $data['title'] = 'My Profile';
+        $data['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
 
-        $this->load->view('templates/dashboard_header', $d);
+        $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar');
         $this->load->view('templates/topbar');
-        $this->load->view('admin/index', $d);
-        $this->load->view('templates/dashboard_footer');
+        $this->load->view('profile/index', $data);
+        $this->load->view('templates/footer');
     }
 }

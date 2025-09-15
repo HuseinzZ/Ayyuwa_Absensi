@@ -25,8 +25,6 @@ class Master extends CI_Controller
         parent::__construct();
         is_logged_in();
         $this->load->library('form_validation');
-        $this->load->model('Admin_model');
-        // $this->load->model('Profile_model');
         $this->load->model('Employee_model');
         $this->load->model('Potition_model');
         $this->load->model('Users_model');
@@ -36,7 +34,7 @@ class Master extends CI_Controller
     public function index()
     {
         $d['title'] = 'Employee';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee'] = $this->Employee_model->getAll();
 
         $this->load->view('templates/table_header', $d);
@@ -50,7 +48,7 @@ class Master extends CI_Controller
     public function a_employee()
     {
         $d['title'] = 'Add Employee';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['potitions'] = $this->Potition_model->getAll();
 
         // Aturan validasi
@@ -108,7 +106,7 @@ class Master extends CI_Controller
     public function e_employee($id)
     {
         $d['title'] = 'Edit Employee';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee'] = $this->Employee_model->getById($id);
         $d['potitions'] = $this->Potition_model->getAll();
 
@@ -183,7 +181,7 @@ class Master extends CI_Controller
     public function potition()
     {
         $d['title'] = 'Potition';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['potition'] = $this->Potition_model->getAll();
 
         $this->load->view('templates/table_header', $d);
@@ -197,7 +195,7 @@ class Master extends CI_Controller
     public function a_potition()
     {
         $d['title'] = 'Add Potition';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
 
         $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric|max_length[3]');
         $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
@@ -230,7 +228,7 @@ class Master extends CI_Controller
     public function e_potition($id)
     {
         $d['title'] = 'Edit Potition';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['old_potition'] = $this->Potition_model->getById($id);
 
         $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
@@ -262,7 +260,7 @@ class Master extends CI_Controller
     {
         $d['title'] = 'Users';
         $d['data'] = $this->Users_model->getAllUsersWithEmployeeData();
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
 
         $this->load->view('templates/table_header', $d);
         $this->load->view('templates/sidebar');
@@ -275,7 +273,7 @@ class Master extends CI_Controller
     public function a_users($id, $potition_id)
     {
         $d['title'] = 'Create Account';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee_id'] = $id;
         $d['potition_id'] = $potition_id;
 
@@ -316,7 +314,7 @@ class Master extends CI_Controller
     public function e_users($username)
     {
         $d['title'] = 'Edit Account';
-        $d['account'] = $this->Admin_model->getAdmin($this->session->userdata('username'));
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['user'] = $this->Users_model->getByUsername($username);
 
         $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[3]|matches[u_password2]');

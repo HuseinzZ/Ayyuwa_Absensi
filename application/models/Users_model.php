@@ -16,6 +16,16 @@ class Users_model extends CI_Model
         return $this->db->get_where('users', ['username' => $username])->row_array();
     }
 
+    public function getByUsernameWithEmployeeData($username)
+    {
+        $this->db->select('users.*, employee.*, potition.id AS potition_id, potition.name AS potition_name');
+        $this->db->from('users');
+        $this->db->join('employee', 'users.employee_id = employee.id', 'inner');
+        $this->db->join('potition', 'employee.potition_id = potition.id', 'left');
+        $this->db->where('users.username', $username);
+        return $this->db->get()->row_array();
+    }
+
     public function getAllUsersWithEmployeeData()
     {
         $this->db->select('employee.id AS e_id, potition.id AS d_id, users.username AS u_username, employee.name AS e_name');
