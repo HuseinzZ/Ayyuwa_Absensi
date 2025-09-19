@@ -11,56 +11,31 @@
 
 
         <!-- Query Menu -->
-        <?php
+        <?php foreach ($menu as $mn) : ?>
+            <hr class="sidebar-divider mt-3">
+            <div class="sidebar-heading">
+                <?= $mn['menu']; ?>
+            </div>
 
-        $role_id = $this->session->userdata('role_id');
-
-        $queryMenu = "SELECT `user_menu`.`id`, `menu`
-                      FROM `user_menu` JOIN `user_access`
-                        ON `user_menu`.`id` = `user_access`.`menu_id`
-                     WHERE `user_access`.`role_id` = $role_id
-                  ORDER BY `user_access`.`menu_id` ASC";
-
-        $menu = $this->db->query($queryMenu)->result_array();
-
-        foreach ($menu as $mn) :
-
+            <?php
             $menuId = $mn['id'];
-
-            $querySubMenu = "SELECT * FROM `user_submenu`
-                                 WHERE `menu_id` = $menuId 
-                                   AND `is_active` = 1 ORDER BY `title` ASC;";
-
-            $subMenu = $this->db->query($querySubMenu)->result_array();
-
-            foreach ($subMenu as $sm) :
-
-                if ($title == $sm['title']) :
-        ?>
-                    <li class="nav-item active">
-
-                    <?php
-
-                else :
-                    ?>
-                    <li class="nav-item">
-                    <?php endif; ?>
-
+            $subMenus = $submenus[$menuId];
+            foreach ($subMenus as $sm) :
+            ?>
+                <li class="nav-item <?= ($title == $sm['title']) ? 'active' : ''; ?>">
                     <a class="nav-link pb-0" href="<?= base_url($sm['url']); ?>">
                         <i class="<?= $sm['icon']; ?>"></i>
-                        <span><?= $sm['title']; ?></span></a>
-                    </li>
-
-                <?php endforeach; ?>
-
-                <hr class="sidebar-divider mt-3">
+                        <span><?= $sm['title']; ?></span>
+                    </a>
+                </li>
             <?php endforeach; ?>
-            </li>
+        <?php endforeach; ?>
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
 
     </ul>
     <!-- End of Sidebar -->

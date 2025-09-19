@@ -29,6 +29,7 @@ class Admin extends CI_Controller
         $this->load->library('form_validation');
         $this->load->model('Users_model');
         $this->load->model('Dashboard_model');
+        $this->load->model('Menu_model');
     }
 
     // Dashboard
@@ -38,9 +39,14 @@ class Admin extends CI_Controller
         $d['title'] = 'Dashboard';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['display'] = $this->Dashboard_model->getDataForDashboard();
-
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
         $this->load->view('templates/dashboard_header', $d);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');
         $this->load->view('admin/index', $d);
         $this->load->view('templates/dashboard_footer');

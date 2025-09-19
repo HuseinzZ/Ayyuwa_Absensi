@@ -22,7 +22,7 @@ class Auth extends CI_Controller
     {
         parent::__construct();
         $this->load->library('form_validation');
-        $this->load->model('Auth_model');
+        $this->load->model('Users_model');
     }
 
     public function index()
@@ -58,7 +58,7 @@ class Auth extends CI_Controller
         $password = $this->input->post('password', true);
 
         // Panggil model
-        $user = $this->Auth_model->getUserByUsername($username);
+        $user = $this->Users_model->getByUsername($username);
 
         if ($user) {
             if (password_verify($password, $user['password'])) {

@@ -28,6 +28,7 @@ class Master extends CI_Controller
         $this->load->model('Employee_model');
         $this->load->model('Potition_model');
         $this->load->model('Users_model');
+        $this->load->model('Menu_model');
     }
 
     // Master employee
@@ -36,9 +37,14 @@ class Master extends CI_Controller
         $d['title'] = 'Employee';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee'] = $this->Employee_model->getAll();
-
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
         $this->load->view('templates/table_header', $d);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');
         $this->load->view('master/employee/index', $d);
         $this->load->view('templates/table_footer');
@@ -50,6 +56,12 @@ class Master extends CI_Controller
         $d['title'] = 'Add Employee';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['potitions'] = $this->Potition_model->getAll();
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         // Aturan validasi
         $this->form_validation->set_rules('emp_id', 'ID', 'required|trim|is_unique[employee.id]');
@@ -62,7 +74,7 @@ class Master extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
             $this->load->view('master/employee/a_employee', $d);
             $this->load->view('templates/table_footer');
@@ -109,6 +121,12 @@ class Master extends CI_Controller
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee'] = $this->Employee_model->getById($id);
         $d['potitions'] = $this->Potition_model->getAll();
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         // Aturan validasi
         $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
@@ -120,7 +138,7 @@ class Master extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
             $this->load->view('master/employee/e_employee', $d);
             $this->load->view('templates/table_footer');
@@ -183,9 +201,15 @@ class Master extends CI_Controller
         $d['title'] = 'Potition';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['potition'] = $this->Potition_model->getAll();
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         $this->load->view('templates/table_header', $d);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');
         $this->load->view('master/potition/index', $d);
         $this->load->view('templates/table_footer');
@@ -196,13 +220,19 @@ class Master extends CI_Controller
     {
         $d['title'] = 'Add Potition';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric|max_length[3]');
         $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
             $this->load->view('master/potition/a_potition', $d);
             $this->load->view('templates/table_footer');
@@ -230,12 +260,18 @@ class Master extends CI_Controller
         $d['title'] = 'Edit Potition';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['old_potition'] = $this->Potition_model->getById($id);
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
             $this->load->view('master/potition/e_potition', $d);
             $this->load->view('templates/table_footer');
@@ -261,9 +297,15 @@ class Master extends CI_Controller
         $d['title'] = 'Users';
         $d['data'] = $this->Users_model->getAllUsersWithEmployeeData();
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         $this->load->view('templates/table_header', $d);
-        $this->load->view('templates/sidebar');
+        $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');
         $this->load->view('master/users/index', $d);
         $this->load->view('templates/table_footer');
@@ -276,18 +318,24 @@ class Master extends CI_Controller
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee_id'] = $id;
         $d['potition_id'] = $potition_id;
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[8]|matches[u_password2]');
         $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
             $this->load->view('master/users/a_users', $d);
             $this->load->view('templates/table_footer');
         } else {
-            $username_auto = $potition_id . $id;
+            $username_auto = strtolower($potition_id) . $id;
 
             $data = [
                 'username'      => $username_auto,
@@ -316,13 +364,19 @@ class Master extends CI_Controller
         $d['title'] = 'Edit Account';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['user'] = $this->Users_model->getByUsername($username);
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
 
         $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[3]|matches[u_password2]');
         $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
-            $this->load->view('templates/sidebar');
+            $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
             $this->load->view('master/users/e_users', $d);
             $this->load->view('templates/table_footer');

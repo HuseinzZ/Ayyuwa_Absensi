@@ -11,7 +11,7 @@
                         <div class="form-group row">
                             <label for="u_username" class="col-sm-4 col-form-label">Username</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="u_username" name="u_username" value="<?= $potition_id . $employee_id; ?>" readonly>
+                                <input type="text" class="form-control" id="u_username" name="u_username" value="<?= strtolower($potition_id) . $employee_id; ?>" readonly>
                                 <?= form_error('u_username', '<small class="text-danger pl-3">', '</small>'); ?>
                             </div>
                         </div>
