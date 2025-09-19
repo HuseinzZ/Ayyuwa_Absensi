@@ -11,7 +11,7 @@
                         <div class="form-group row">
                             <label for="p_id" class="col-sm-4 col-form-label">Potition ID</label>
                             <div class="col-sm-8">
-                                <input type="text" readonly class="form-control-plaintext" id="p_id" name="p_id" value="<?= $old_potition['id']; ?>">
+                                <input type="text" readonly class="form-control" id="p_id" name="p_id" value="<?= $old_potition['id']; ?>">
                             </div>
                         </div>
                         <div class="form-group row">

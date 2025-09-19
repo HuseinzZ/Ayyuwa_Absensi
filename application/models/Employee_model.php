@@ -36,4 +36,15 @@ class Employee_model extends CI_Model
         $this->db->where('id', $id);
         return $this->db->delete('employee');
     }
+
+    public function deleteWithUser($id)
+    {
+        $this->db->delete('users', ['employee_id' => $id]);
+        return $this->db->delete('employee', ['id' => $id]);
+    }
+
+    public function getByEmail($email)
+    {
+        return $this->db->get_where('employee', ['email' => $email])->row_array();
+    }
 }

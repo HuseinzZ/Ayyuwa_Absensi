@@ -64,12 +64,12 @@ class Master extends CI_Controller
         }
 
         // Aturan validasi
-        $this->form_validation->set_rules('emp_id', 'ID', 'required|trim|is_unique[employee.id]');
+        $this->form_validation->set_rules('emp_id', 'id', 'required');
         $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
         $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email|is_unique[employee.email]');
         $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
         $this->form_validation->set_rules('emp_potition_id', 'Potition', 'required');
-        $this->form_validation->set_rules('emp_birth_date', 'Date of Birth', 'required');
+        $this->form_validation->set_rules('emp_birth_date', 'Birth Date', 'required');
         $this->form_validation->set_rules('emp_hire_date', 'Hire Date', 'required');
 
         if ($this->form_validation->run() == false) {
@@ -104,7 +104,8 @@ class Master extends CI_Controller
                     $new_image = $this->upload->data('file_name');
                     $data['image'] = $new_image;
                 } else {
-                    echo $this->upload->display_errors();
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger">' . $this->upload->display_errors() . '</div>');
+                    redirect('master/a_employee');
                 }
             }
 
@@ -130,7 +131,7 @@ class Master extends CI_Controller
 
         // Aturan validasi
         $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
-        $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email');
+        $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email|callback_email_unique[' . $id . ']');
         $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
         $this->form_validation->set_rules('emp_potition_id', 'Potition', 'required');
         $this->form_validation->set_rules('emp_birth_date', 'Date of Birth', 'required');
@@ -181,6 +182,16 @@ class Master extends CI_Controller
         }
     }
 
+    // Email unique
+    public function email_unique($email, $id)
+    {
+        $employee = $this->Employee_model->getByEmail($email);
+        if ($employee && $employee['id'] != $id) {
+            $this->form_validation->set_message('email_unique', 'Email sudah digunakan!');
+            return false;
+        }
+        return true;
+    }
 
     // Delete employee
     public function d_employee($id)
@@ -190,7 +201,7 @@ class Master extends CI_Controller
             unlink(FCPATH . 'assets/img/profile/' . $employee_data['image']);
         }
 
-        $this->Employee_model->delete($id);
+        $this->Employee_model->deleteWithUser($id);
         $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil dihapus!</div>');
         redirect('master/index');
     }
@@ -335,7 +346,7 @@ class Master extends CI_Controller
             $this->load->view('master/users/a_users', $d);
             $this->load->view('templates/table_footer');
         } else {
-            $username_auto = strtolower($potition_id) . $id;
+            $username_auto = strtolower($potition_id) . str_pad($id, 3, '0', STR_PAD_LEFT);
 
             $data = [
                 'username'      => $username_auto,
@@ -371,7 +382,7 @@ class Master extends CI_Controller
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
 
-        $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[3]|matches[u_password2]');
+        $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[8]|matches[u_password2]');
         $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
 
         if ($this->form_validation->run() == false) {
