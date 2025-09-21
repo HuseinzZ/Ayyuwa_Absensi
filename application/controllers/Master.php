@@ -24,6 +24,8 @@ class Master extends CI_Controller
     {
         parent::__construct();
         is_logged_in();
+
+        // Load model
         $this->load->library('form_validation');
         $this->load->model('Employee_model');
         $this->load->model('Potition_model');
@@ -43,6 +45,7 @@ class Master extends CI_Controller
         foreach ($d['menu'] as $mn) {
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
+
         $this->load->view('templates/table_header', $d);
         $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');
@@ -64,7 +67,6 @@ class Master extends CI_Controller
         }
 
         // Aturan validasi
-        $this->form_validation->set_rules('emp_id', 'id', 'required');
         $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
         $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email|is_unique[employee.email]');
         $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
@@ -110,9 +112,20 @@ class Master extends CI_Controller
             }
 
             $this->Employee_model->insert($data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil ditambahkan!</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Employee added successfully!</div>');
             redirect('master/index');
         }
+    }
+
+    // Email unique
+    public function email_unique($email, $id)
+    {
+        $employee = $this->Employee_model->getByEmail($email);
+        if ($employee && $employee['id'] != $id) {
+            $this->form_validation->set_message('email_unique', 'Email already in use!');
+            return false;
+        }
+        return true;
     }
 
     // Edit employee
@@ -177,20 +190,9 @@ class Master extends CI_Controller
             }
 
             $this->Employee_model->update($id, $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil diupdate!</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Employee updated successfully!</div>');
             redirect('master/index');
         }
-    }
-
-    // Email unique
-    public function email_unique($email, $id)
-    {
-        $employee = $this->Employee_model->getByEmail($email);
-        if ($employee && $employee['id'] != $id) {
-            $this->form_validation->set_message('email_unique', 'Email sudah digunakan!');
-            return false;
-        }
-        return true;
     }
 
     // Delete employee
@@ -202,7 +204,7 @@ class Master extends CI_Controller
         }
 
         $this->Employee_model->deleteWithUser($id);
-        $this->session->set_flashdata('message', '<div class="alert alert-success">Employee berhasil dihapus!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success">Employee deleted successfully!</div>');
         redirect('master/index');
     }
 
@@ -238,6 +240,7 @@ class Master extends CI_Controller
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
 
+        // aturan validasi
         $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric|max_length[3]');
         $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
 
@@ -255,11 +258,11 @@ class Master extends CI_Controller
 
             $exists = $this->Potition_model->getById($data['id']);
             if ($exists) {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger">ID sudah digunakan!</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger">ID already in use!</div>');
                 redirect('master/a_potition');
             } else {
                 $this->Potition_model->insert($data);
-                $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil ditambahkan!</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-success">Position added successfully!</div>');
                 redirect('master/potition');
             }
         }
@@ -289,7 +292,7 @@ class Master extends CI_Controller
         } else {
             $data = ['name' => $this->input->post('p_name', true)];
             $this->Potition_model->update($id, $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil diupdate!</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Position updated successfully!</div>');
             redirect('master/potition');
         }
     }
@@ -298,7 +301,7 @@ class Master extends CI_Controller
     public function d_potition($id)
     {
         $this->Potition_model->delete($id);
-        $this->session->set_flashdata('message', '<div class="alert alert-success">Potition berhasil dihapus!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success">Position deleted successfully!</div>');
         redirect('master/potition');
     }
 
@@ -336,6 +339,7 @@ class Master extends CI_Controller
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
 
+        // aturan validasi
         $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[8]|matches[u_password2]');
         $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
 
@@ -359,12 +363,12 @@ class Master extends CI_Controller
 
             $existing_user = $this->Users_model->getByUsername($username_auto);
             if ($existing_user) {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger">Username sudah ada. Harap hubungi administrator.</div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger">Username already exists.</div>');
                 redirect('master/users');
             }
 
             $this->Users_model->insert($data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success">User berhasil ditambahkan!</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success">User added successfully!</div>');
             redirect('master/users');
         }
     }
@@ -382,6 +386,7 @@ class Master extends CI_Controller
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
 
+        // aturan validasi
         $this->form_validation->set_rules('u_password', 'Password', 'required|trim|min_length[8]|matches[u_password2]');
         $this->form_validation->set_rules('u_password2', 'Repeat Password', 'required|trim|matches[u_password]');
 
@@ -398,7 +403,7 @@ class Master extends CI_Controller
             ];
 
             $this->Users_model->updateByUsername($username, $data);
-            $this->session->set_flashdata('message', '<div class="alert alert-success">User berhasil diupdate!</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success">User updated successfully!</div>');
             redirect('master/users');
         }
     }
@@ -407,7 +412,7 @@ class Master extends CI_Controller
     public function d_users($username)
     {
         $this->Users_model->deleteByUsername($username);
-        $this->session->set_flashdata('message', '<div class="alert alert-success">User berhasil dihapus!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-success">User deleted successfully!</div>');
         redirect('master/users');
     }
 }

@@ -10,11 +10,6 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="emp_id">ID</label>
-                        <input type="text" class="form-control" id="emp_id" name="emp_id" value="<?= set_value('emp_id'); ?>">
-                        <?= form_error('emp_id', '<small class="text-danger">', '</small>'); ?>
-                    </div>
-                    <div class="form-group">
                         <label for="emp_name">Name</label>
                         <input type="text" class="form-control" id="emp_name" name="emp_name" value="<?= set_value('emp_name'); ?>">
                         <?= form_error('emp_name', '<small class="text-danger">', '</small>'); ?>
