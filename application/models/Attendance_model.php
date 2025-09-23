@@ -54,4 +54,10 @@ class Attendance_model extends CI_Model
             return $row['status_in'];
         }
     }
+
+    public function getByEmployee($employee_id)
+    {
+        $this->db->order_by('attendance_date', 'DESC');
+        return $this->db->get_where('attendance', ['employee_id' => $employee_id])->result_array();
+    }
 }

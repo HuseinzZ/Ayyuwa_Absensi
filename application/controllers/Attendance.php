@@ -35,7 +35,7 @@ class Attendance extends CI_Controller
     {
         $username = $this->session->userdata('username');
         $user     = $this->Users_model->getByUsernameWithEmployeeData($username);
-        $today = date('Y-m-d');
+        $today    = date('Y-m-d');
 
         // data
         $d['attendance'] = $this->Attendance_model->getByEmployeeAndDate($user['employee_id'], $today);
@@ -60,51 +60,73 @@ class Attendance extends CI_Controller
     {
         $username   = $this->session->userdata('username');
         $user       = $this->Users_model->getByUsernameWithEmployeeData($username);
+
         $today       = date('Y-m-d');
         $attendance  = $this->Attendance_model->getByEmployeeAndDate($user['employee_id'], $today);
         $currentTime = date('H:i:s');
 
         // Aturan jam kerja
-        $minCheckin  = "07:00:00"; // minimal bisa check-in
-        $workStart   = "08:00:00"; // jam masuk kerja
-        $minCheckout = "16:30:00"; // minimal bisa checkout
-        $workEnd     = "17:00:00"; // jam pulang kerja
+        $minCheckin   = "07:00:00"; // minimal bisa check-in
+        $workStart    = "08:00:00"; // jam kerja resmi
+        $maxCheckin   = "24:00:00"; // lewat jam ini tidak bisa check-in
+        $minCheckout  = "16:30:00"; // minimal bisa check-out
+        $workEnd      = "17:00:00"; // jam pulang resmi
+        $maxCheckout  = "24:00:00"; // lewat jam ini check-out ditutup
 
         if (!$attendance) {
             // === Check-in ===
             if ($currentTime < $minCheckin) {
                 $this->session->set_flashdata(
                     'message',
-                    '<div class="alert alert-danger">Check-in is only allowed after ' . $minCheckin . '</div>'
+                    '<div class="alert alert-danger">Check-in only opens at ' . $minCheckin . '</div>'
                 );
                 redirect('attendance');
                 return;
             }
 
+            if ($currentTime > $maxCheckin) {
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">You cannot check-in after ' . $maxCheckin . '</div>'
+                );
+                redirect('attendance');
+                return;
+            }
+
+            // Tentukan status hadir / telat
             $status_in = ($currentTime > $workStart) ? 'Late' : 'Present';
 
             $data = [
-                'employee_id'     => $user['employee_id'],
+                'employee_id' => $user['employee_id'],
                 'attendance_date' => $today,
-                'check_in'        => $currentTime,
-                'status_in'       => $status_in,
-                'latitude'        => $this->input->post('latitude'),
-                'longitude'       => $this->input->post('longitude'),
-                'created_at'      => date('Y-m-d H:i:s'),
-                'updated_at'      => date('Y-m-d H:i:s'),
+                'check_in'    => $currentTime,
+                'status_in'   => $status_in,
+                'latitude'    => $this->input->post('latitude'),
+                'longitude'   => $this->input->post('longitude'),
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s'),
             ];
 
             $this->Attendance_model->insert($data);
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success">Check-in successful at ' . date('H:i:s') . ' | Status: ' . $status_in . '</div>'
+                '<div class="alert alert-success">Check-in successful at ' . $currentTime . ' | Status: ' . $status_in . '</div>'
             );
         } elseif (!$attendance['check_out']) {
             // === Check-out ===
             if ($currentTime < $minCheckout) {
                 $this->session->set_flashdata(
                     'message',
-                    '<div class="alert alert-danger">Check-out is only allowed after ' . $minCheckout . '</div>'
+                    '<div class="alert alert-danger">Check-out only opens at ' . $minCheckout . '</div>'
+                );
+                redirect('attendance');
+                return;
+            }
+
+            if ($currentTime > $maxCheckout) {
+                $this->session->set_flashdata(
+                    'message',
+                    '<div class="alert alert-danger">You cannot check-out after ' . $maxCheckout . '</div>'
                 );
                 redirect('attendance');
                 return;
@@ -121,7 +143,7 @@ class Attendance extends CI_Controller
             $this->Attendance_model->update($attendance['id'], $data);
             $this->session->set_flashdata(
                 'message',
-                '<div class="alert alert-success">Check-out successful at ' . date('H:i:s') . ' | Status: ' . $status_out . '</div>'
+                '<div class="alert alert-success">Check-out successful at ' . $currentTime . ' | Status: ' . $status_out . '</div>'
             );
         } else {
             // Sudah check-in & check-out
