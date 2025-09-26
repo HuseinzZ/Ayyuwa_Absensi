@@ -57,7 +57,6 @@ class Auth extends CI_Controller
         $username = $this->input->post('username', true);
         $password = $this->input->post('password', true);
 
-        // Panggil model
         $user = $this->Users_model->getByUsername($username);
 
         if ($user) {

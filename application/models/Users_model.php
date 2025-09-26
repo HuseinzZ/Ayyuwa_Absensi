@@ -60,4 +60,13 @@ class Users_model extends CI_Model
     {
         return $this->db->delete('users', ['username' => $username]);
     }
+
+    public function getEmployees()
+    {
+        $this->db->select('users.id, users.username, employee.name');
+        $this->db->from('users');
+        $this->db->join('employee', 'users.employee_id = employee.id', 'inner');
+        $this->db->where('users.role_id', 2);
+        return $this->db->get()->result_array();
+    }
 }

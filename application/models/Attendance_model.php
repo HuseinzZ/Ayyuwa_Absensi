@@ -23,6 +23,11 @@ class Attendance_model extends CI_Model
         return $this->db->update('attendance', $data, ['id' => $id]);
     }
 
+    public function delete($id)
+    {
+        return $this->db->delete('attendance', ['id' => $id]);
+    }
+
     public function getTodayAll()
     {
         $today = date('Y-m-d');
@@ -59,5 +64,37 @@ class Attendance_model extends CI_Model
     {
         $this->db->order_by('attendance_date', 'DESC');
         return $this->db->get_where('attendance', ['employee_id' => $employee_id])->result_array();
+    }
+
+    public function getAllWithUsers()
+    {
+        $this->db->select('attendance.*, users.name, users.username');
+        $this->db->from('attendance');
+        $this->db->join('users', 'users.employee_id = attendance.employee_id');
+        $this->db->order_by('attendance.date', 'DESC');
+        return $this->db->get()->result_array();
+    }
+
+    public function getAllWithEmployee()
+    {
+        $this->db->select('attendance.*, employee.name as employee_name, employee.email');
+        $this->db->from('attendance');
+        $this->db->join('employee', 'employee.id = attendance.employee_id');
+        $this->db->order_by('attendance.attendance_date', 'DESC');
+        return $this->db->get()->result_array();
+    }
+
+    public function getById($id)
+    {
+        return $this->db->get_where('attendance', ['id' => $id])->row_array();
+    }
+
+    public function getByIdWithEmployeeName($id)
+    {
+        $this->db->select('attendance.*, employee.name as employee_name');
+        $this->db->from('attendance');
+        $this->db->join('employee', 'employee.id = attendance.employee_id');
+        $this->db->where('attendance.id', $id);
+        return $this->db->get()->row_array();
     }
 }

@@ -27,6 +27,7 @@ class Master extends CI_Controller
 
         // Load model
         $this->load->library('form_validation');
+        $this->load->model('Attendance_model');
         $this->load->model('Employee_model');
         $this->load->model('Potition_model');
         $this->load->model('Users_model');
@@ -414,5 +415,114 @@ class Master extends CI_Controller
         $this->Users_model->deleteByUsername($username);
         $this->session->set_flashdata('message', '<div class="alert alert-success">User deleted successfully!</div>');
         redirect('master/users');
+    }
+
+    // Master attendance
+    public function attendance()
+    {
+        $d['title']   = 'Attendance';
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
+        $d['attendance'] = $this->Attendance_model->getAllWithEmployee(); // tampilkan semua absen
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
+
+        $this->load->view('templates/table_header', $d);
+        $this->load->view('templates/sidebar', $d);
+        $this->load->view('templates/topbar');
+        $this->load->view('master/attendance/index', $d);
+        $this->load->view('templates/table_footer');
+    }
+
+    // Add attendance
+    public function a_attendance()
+    {
+        $d['title']   = 'Add Attendance';
+        $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
+        $d['employees'] = $this->Users_model->getEmployees();
+        $role_id = $this->session->userdata('role_id');
+        $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus'] = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
+
+        $this->form_validation->set_rules('employee_id', 'Employee', 'required');
+        $this->form_validation->set_rules('attendance_date', 'Attendance Date', 'required');
+        $this->form_validation->set_rules('check_in', 'Check-in', 'required');
+        $this->form_validation->set_rules('status_in', 'Status In', 'required');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/table_header', $d);
+            $this->load->view('templates/sidebar', $d);
+            $this->load->view('templates/topbar');
+            $this->load->view('master/attendance/a_attendance', $d);
+            $this->load->view('templates/table_footer');
+        } else {
+            $data = [
+                'employee_id' => $this->input->post('employee_id'),
+                'attendance_date'        => $this->input->post('attendance_date'),
+                'check_in'    => $this->input->post('check_in'),
+                'status_in'   => $this->input->post('status_in'),
+                'check_out'   => $this->input->post('check_out'),
+                'status_out'  => $this->input->post('status_out'),
+                'latitude'    => $this->input->post('latitude'),
+                'longitude'   => $this->input->post('longitude'),
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s')
+            ];
+            $this->Attendance_model->insert($data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Attendance added successfully!</div>');
+            redirect('master/attendance');
+        }
+    }
+
+    // Edit attendance
+    public function e_attendance($id)
+    {
+        $d['title']      = 'Edit Attendance';
+        $d['account']    = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
+        $d['attendance'] = $this->Attendance_model->getByIdWithEmployeeName($id);
+        $d['employees']  = $this->Employee_model->getAll();
+        $role_id = $this->session->userdata('role_id');
+        $d['menu']       = $this->Menu_model->getMenuByRole($role_id);
+        $d['submenus']   = [];
+        foreach ($d['menu'] as $mn) {
+            $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
+        }
+
+        if ($this->input->post()) {
+            $data = [
+                'employee_id'   => $this->input->post('employee_id'), // Tambahkan ini
+                'attendance_date' => $this->input->post('attendance_date'), // Ganti 'date'
+                'check_in'      => $this->input->post('check_in'),
+                'status_in'     => $this->input->post('status_in'),
+                'check_out'     => $this->input->post('check_out'),
+                'status_out'    => $this->input->post('status_out'),
+                'latitude'      => $this->input->post('latitude'),
+                'longitude'     => $this->input->post('longitude'),
+                'updated_at'    => date('Y-m-d H:i:s')
+            ];
+            $this->Attendance_model->update($id, $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Attendance updated successfully!</div>');
+            redirect('master/attendance');
+        }
+
+        $this->load->view('templates/table_header', $d);
+        $this->load->view('templates/sidebar', $d);
+        $this->load->view('templates/topbar');
+        $this->load->view('master/attendance/e_attendance', $d);
+        $this->load->view('templates/table_footer');
+    }
+
+    // Delete attendance
+    public function d_attendance($id)
+    {
+        $this->Attendance_model->delete($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-success">Attendance deleted successfully!</div>');
+        redirect('master/attendance');
     }
 }

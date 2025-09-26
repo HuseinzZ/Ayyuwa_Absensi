@@ -38,9 +38,7 @@ class History extends CI_Controller
 
         $d['account']    = $user;
         $d['title']      = 'Attendance History';
-        $d['history']    = $this->Attendance_model->getByEmployee($user['employee_id']); // ambil semua data absensi
-
-        // menu
+        $d['history']    = $this->Attendance_model->getByEmployee($user['employee_id']);
         $role_id   = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];

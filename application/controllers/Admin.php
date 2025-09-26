@@ -24,8 +24,6 @@ class Admin extends CI_Controller
         parent::__construct();
         // is_weekends();
         is_logged_in();
-        // is_checked_in();
-        // is_checked_out();
         $this->load->library('form_validation');
         $this->load->model('Users_model');
         $this->load->model('Dashboard_model');
