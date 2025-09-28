@@ -37,7 +37,6 @@ class Attendance extends CI_Controller
         $user     = $this->Users_model->getByUsernameWithEmployeeData($username);
         $today    = date('Y-m-d');
 
-        // data
         $d['attendance'] = $this->Attendance_model->getByEmployeeAndDate($user['employee_id'], $today);
         $d['status']     = $this->Attendance_model->getStatus($user['employee_id'], $today);
         $d['account']    = $user;
@@ -68,7 +67,7 @@ class Attendance extends CI_Controller
         // Aturan jam kerja
         $minCheckin   = "07:00:00"; // minimal bisa check-in
         $workStart    = "08:00:00"; // jam kerja resmi
-        $maxCheckin   = "24:00:00"; // lewat jam ini tidak bisa check-in
+        $maxCheckin   = "08:30:00"; // lewat jam ini tidak bisa check-in
         $minCheckout  = "16:30:00"; // minimal bisa check-out
         $workEnd      = "17:00:00"; // jam pulang resmi
         $maxCheckout  = "24:00:00"; // lewat jam ini check-out ditutup

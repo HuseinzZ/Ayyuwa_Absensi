@@ -29,6 +29,7 @@ class History extends CI_Controller
         $this->load->model('Attendance_model');
         $this->load->model('Users_model');
         $this->load->model('Menu_model');
+        $this->load->model('History_model');
     }
 
     public function index()
@@ -38,7 +39,7 @@ class History extends CI_Controller
 
         $d['account']    = $user;
         $d['title']      = 'Attendance History';
-        $d['history']    = $this->Attendance_model->getByEmployee($user['employee_id']);
+        $d['history']    = $this->History_model->getByEmployee($user['employee_id']);
         $role_id   = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];

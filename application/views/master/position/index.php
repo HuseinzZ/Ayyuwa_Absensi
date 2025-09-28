@@ -1,15 +1,15 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <!-- Data Table Potition-->
+            <!-- Data Table Position-->
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-dark">DataTables Potition</h6>
-                    <a href="<?= base_url('master/a_potition'); ?>" class="btn btn-primary btn-icon-split btn-sm">
+                    <h6 class="m-0 font-weight-bold text-dark">DataTables Position</h6>
+                    <a href="<?= base_url('master/a_position'); ?>" class="btn btn-primary btn-icon-split btn-sm">
                         <span class="icon text-white">
                             <i class="fas fa-plus-circle"></i>
                         </span>
-                        <span class="text">Add new potition</span>
+                        <span class="text">Add new position</span>
                     </a>
                 </div>
                 <div class="card-body">
@@ -19,7 +19,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>ID</th>
-                                    <th>Potition Name</th>
+                                    <th>Position Name</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -27,19 +27,19 @@
                             <tbody>
                                 <?php
                                 $i = 1;
-                                foreach ($potition as $ptt) :
+                                foreach ($position as $ptt) :
                                 ?>
                                     <tr>
                                         <td class="align-middle"><?= $i++; ?></td>
                                         <td class="align-middle"><?= $ptt['id']; ?></td>
                                         <td class="align-middle"><?= $ptt['name']; ?></td>
                                         <td class="align-middle text-center">
-                                            <a href="<?= base_url('master/e_potition/') . $ptt['id'] ?>" class="btn btn-warning btn-icon-split btn-sm">
+                                            <a href="<?= base_url('master/e_position/') . $ptt['id'] ?>" class="btn btn-warning btn-icon-split btn-sm">
                                                 <span class="icon text-white">
                                                     <i class="fas fa-edit"></i>
                                                 </span>
                                             </a>
-                                            <a href="<?= base_url('master/d_potition/') . $ptt['id'] ?>" class="btn btn-danger btn-icon-split btn-sm ml-2" onclick="return confirm('Deleted Potition will lost forever. Still want to delete?')">
+                                            <a href="<?= base_url('master/d_position/') . $ptt['id'] ?>" class="btn btn-danger btn-icon-split btn-sm ml-2" onclick="return confirm('Deleted Position will lost forever. Still want to delete?')">
                                                 <span class="icon text-white">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </span>

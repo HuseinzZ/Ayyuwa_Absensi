@@ -22,7 +22,6 @@ class Admin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // is_weekends();
         is_logged_in();
         $this->load->library('form_validation');
         $this->load->model('Users_model');
@@ -30,19 +29,20 @@ class Admin extends CI_Controller
         $this->load->model('Menu_model');
     }
 
-    // Dashboard
     public function index()
     {
-        // Dashboard
         $d['title'] = 'Dashboard';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['display'] = $this->Dashboard_model->getDataForDashboard();
+        $d['monthly_attendance'] = $this->Dashboard_model->getMonthlyAttendanceCount();
+        $d['attendance_status'] = $this->Dashboard_model->getAttendanceStatusCounts();
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];
         foreach ($d['menu'] as $mn) {
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
+
         $this->load->view('templates/dashboard_header', $d);
         $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');

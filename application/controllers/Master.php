@@ -24,12 +24,10 @@ class Master extends CI_Controller
     {
         parent::__construct();
         is_logged_in();
-
-        // Load model
         $this->load->library('form_validation');
         $this->load->model('Attendance_model');
         $this->load->model('Employee_model');
-        $this->load->model('Potition_model');
+        $this->load->model('Position_model');
         $this->load->model('Users_model');
         $this->load->model('Menu_model');
     }
@@ -59,7 +57,7 @@ class Master extends CI_Controller
     {
         $d['title'] = 'Add Employee';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
-        $d['potitions'] = $this->Potition_model->getAll();
+        $d['positions'] = $this->Position_model->getAll();
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];
@@ -71,7 +69,7 @@ class Master extends CI_Controller
         $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
         $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email|is_unique[employee.email]');
         $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
-        $this->form_validation->set_rules('emp_potition_id', 'Potition', 'required');
+        $this->form_validation->set_rules('emp_position_id', 'Position', 'required');
         $this->form_validation->set_rules('emp_birth_date', 'Birth Date', 'required');
         $this->form_validation->set_rules('emp_hire_date', 'Hire Date', 'required');
 
@@ -87,7 +85,7 @@ class Master extends CI_Controller
                 'name'        => $this->input->post('emp_name', true),
                 'email'       => $this->input->post('emp_email', true),
                 'gender'      => $this->input->post('emp_gender', true),
-                'potition_id' => $this->input->post('emp_potition_id', true),
+                'position_id' => $this->input->post('emp_position_id', true),
                 'birth_date'  => $this->input->post('emp_birth_date', true),
                 'hire_date'   => $this->input->post('emp_hire_date', true),
                 'created_at'  => date('Y-m-d H:i:s'),
@@ -135,7 +133,7 @@ class Master extends CI_Controller
         $d['title'] = 'Edit Employee';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee'] = $this->Employee_model->getById($id);
-        $d['potitions'] = $this->Potition_model->getAll();
+        $d['positions'] = $this->Position_model->getAll();
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];
@@ -147,7 +145,7 @@ class Master extends CI_Controller
         $this->form_validation->set_rules('emp_name', 'Employee Name', 'required|trim');
         $this->form_validation->set_rules('emp_email', 'Email', 'required|trim|valid_email|callback_email_unique[' . $id . ']');
         $this->form_validation->set_rules('emp_gender', 'Gender', 'required');
-        $this->form_validation->set_rules('emp_potition_id', 'Potition', 'required');
+        $this->form_validation->set_rules('emp_position_id', 'Position', 'required');
         $this->form_validation->set_rules('emp_birth_date', 'Date of Birth', 'required');
         $this->form_validation->set_rules('emp_hire_date', 'Hire Date', 'required');
 
@@ -162,7 +160,7 @@ class Master extends CI_Controller
                 'name'        => $this->input->post('emp_name', true),
                 'email'       => $this->input->post('emp_email', true),
                 'gender'      => $this->input->post('emp_gender', true),
-                'potition_id' => $this->input->post('emp_potition_id', true),
+                'position_id' => $this->input->post('emp_position_id', true),
                 'birth_date'  => $this->input->post('emp_birth_date', true),
                 'hire_date'   => $this->input->post('emp_hire_date', true),
                 'updated_at'  => date('Y-m-d H:i:s')
@@ -209,12 +207,12 @@ class Master extends CI_Controller
         redirect('master/index');
     }
 
-    // Master potition
-    public function potition()
+    // Master position
+    public function position()
     {
-        $d['title'] = 'Potition';
+        $d['title'] = 'Position';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
-        $d['potition'] = $this->Potition_model->getAll();
+        $d['position'] = $this->Position_model->getAll();
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];
@@ -225,14 +223,14 @@ class Master extends CI_Controller
         $this->load->view('templates/table_header', $d);
         $this->load->view('templates/sidebar', $d);
         $this->load->view('templates/topbar');
-        $this->load->view('master/potition/index', $d);
+        $this->load->view('master/position/index', $d);
         $this->load->view('templates/table_footer');
     }
 
-    // Add potition
-    public function a_potition()
+    // Add position
+    public function a_position()
     {
-        $d['title'] = 'Add Potition';
+        $d['title'] = 'Add Position';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
@@ -242,14 +240,14 @@ class Master extends CI_Controller
         }
 
         // aturan validasi
-        $this->form_validation->set_rules('p_id', 'Potition ID', 'required|trim|alpha_numeric|max_length[3]');
-        $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
+        $this->form_validation->set_rules('p_id', 'Position ID', 'required|trim|alpha_numeric|max_length[3]');
+        $this->form_validation->set_rules('p_name', 'Position Name', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
             $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
-            $this->load->view('master/potition/a_potition', $d);
+            $this->load->view('master/position/a_position', $d);
             $this->load->view('templates/table_footer');
         } else {
             $data = [
@@ -257,24 +255,24 @@ class Master extends CI_Controller
                 'name' => $this->input->post('p_name', true)
             ];
 
-            $exists = $this->Potition_model->getById($data['id']);
+            $exists = $this->Position_model->getById($data['id']);
             if ($exists) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger">ID already in use!</div>');
-                redirect('master/a_potition');
+                redirect('master/a_position');
             } else {
-                $this->Potition_model->insert($data);
+                $this->Position_model->insert($data);
                 $this->session->set_flashdata('message', '<div class="alert alert-success">Position added successfully!</div>');
-                redirect('master/potition');
+                redirect('master/position');
             }
         }
     }
 
-    // Edit potition
-    public function e_potition($id)
+    // Edit position
+    public function e_position($id)
     {
-        $d['title'] = 'Edit Potition';
+        $d['title'] = 'Edit Position';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
-        $d['old_potition'] = $this->Potition_model->getById($id);
+        $d['old_position'] = $this->Position_model->getById($id);
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];
@@ -282,28 +280,29 @@ class Master extends CI_Controller
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
 
-        $this->form_validation->set_rules('p_name', 'Potition Name', 'required|trim');
+        // aturan validasi
+        $this->form_validation->set_rules('p_name', 'Position Name', 'required|trim');
 
         if ($this->form_validation->run() == false) {
             $this->load->view('templates/table_header', $d);
             $this->load->view('templates/sidebar', $d);
             $this->load->view('templates/topbar');
-            $this->load->view('master/potition/e_potition', $d);
+            $this->load->view('master/position/e_position', $d);
             $this->load->view('templates/table_footer');
         } else {
             $data = ['name' => $this->input->post('p_name', true)];
-            $this->Potition_model->update($id, $data);
+            $this->Position_model->update($id, $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success">Position updated successfully!</div>');
-            redirect('master/potition');
+            redirect('master/position');
         }
     }
 
-    // Delete potition
-    public function d_potition($id)
+    // Delete position
+    public function d_position($id)
     {
-        $this->Potition_model->delete($id);
+        $this->Position_model->delete($id);
         $this->session->set_flashdata('message', '<div class="alert alert-success">Position deleted successfully!</div>');
-        redirect('master/potition');
+        redirect('master/position');
     }
 
     // Master users
@@ -327,12 +326,12 @@ class Master extends CI_Controller
     }
 
     // Add users
-    public function a_users($id, $potition_id)
+    public function a_users($id, $position_id)
     {
         $d['title'] = 'Create Account';
         $d['account'] = $this->Users_model->getByUsernameWithEmployeeData($this->session->userdata('username'));
         $d['employee_id'] = $id;
-        $d['potition_id'] = $potition_id;
+        $d['position_id'] = $position_id;
         $role_id = $this->session->userdata('role_id');
         $d['menu'] = $this->Menu_model->getMenuByRole($role_id);
         $d['submenus'] = [];
@@ -351,13 +350,13 @@ class Master extends CI_Controller
             $this->load->view('master/users/a_users', $d);
             $this->load->view('templates/table_footer');
         } else {
-            $username_auto = strtolower($potition_id) . str_pad($id, 3, '0', STR_PAD_LEFT);
+            $username_auto = strtolower($position_id) . str_pad($id, 3, '0', STR_PAD_LEFT);
 
             $data = [
                 'username'      => $username_auto,
                 'password'      => password_hash($this->input->post('u_password'), PASSWORD_DEFAULT),
                 'employee_id'   => $id,
-                'role_id'       => ($potition_id === 'CEO') ? 1 : 2,
+                'role_id'       => ($position_id === 'CEO') ? 1 : 2,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s')
             ];
@@ -450,6 +449,7 @@ class Master extends CI_Controller
             $d['submenus'][$mn['id']] = $this->Menu_model->getSubMenuByMenuId($mn['id']);
         }
 
+        // aturan validasi
         $this->form_validation->set_rules('employee_id', 'Employee', 'required');
         $this->form_validation->set_rules('attendance_date', 'Attendance Date', 'required');
         $this->form_validation->set_rules('check_in', 'Check-in', 'required');

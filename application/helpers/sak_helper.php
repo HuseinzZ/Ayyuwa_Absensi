@@ -18,15 +18,3 @@ function is_logged_in()
         }
     }
 }
-
-// function is_weekends()
-// {
-//     date_default_timezone_set('Asia/Jakarta');
-//     $today = date('l', time());
-//     $weekends = ['Saturday', 'Sunday'];
-//     if (in_array($today, $weekends)) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }

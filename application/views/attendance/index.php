@@ -133,7 +133,7 @@
                         }
 
                         if (viewOnMapLink) {
-                            viewOnMapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+                            viewOnMapLink.href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
                             viewOnMapLink.classList.remove('d-none');
                         }
 
