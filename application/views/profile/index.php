@@ -15,7 +15,7 @@
                                 class="img-fluid rounded-circle border border-primary p-1"
                                 style="width: 180px; height: 180px; object-fit: cover; object-position: top; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                             <h5 class="card-title mt-3 text-gray-800"><?= $account['name'] ?></h5>
-                            <p class="card-text text-muted"><?= $account['potition_name'] ?></p>
+                            <p class="card-text text-muted"><?= $account['position_name'] ?></p>
                         </div>
 
                         <div class="col-md-8">
@@ -41,7 +41,7 @@
                                         </tr>
                                         <tr>
                                             <th scope="row">Position</th>
-                                            <td>: <?= $account['potition_name'] ?></td>
+                                            <td>: <?= $account['position_name'] ?></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Birthday</th>

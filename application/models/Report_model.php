@@ -6,10 +6,10 @@ class Report_model extends CI_Model
     // Fungsi ini untuk mendapatkan RINCIAN harian (jika masih diperlukan)
     public function getAttendanceReport($start_date, $end_date, $employee_id = null)
     {
-        $this->db->select('a.*, e.name AS employee_name, p.name AS potition_name');
+        $this->db->select('a.*, e.name AS employee_name, p.name AS position_name');
         $this->db->from('attendance a');
         $this->db->join('employee e', 'a.employee_id = e.id');
-        $this->db->join('potition p', 'e.potition_id = p.id', 'left');
+        $this->db->join('position p', 'e.position_id = p.id', 'left');
         $this->db->where('a.attendance_date >=', $start_date);
         $this->db->where('a.attendance_date <=', $end_date);
 
@@ -26,7 +26,7 @@ class Report_model extends CI_Model
     // FUNGSI UTAMA UNTUK RINGKASAN TOTAL KEHADIRAN
     public function getAttendanceSummary($start_date, $end_date, $employee_id = null)
     {
-        $this->db->select('e.id AS employee_id, e.name AS employee_name, p.name AS potition_name, COUNT(a.id) AS total_hadir');
+        $this->db->select('e.id AS employee_id, e.name AS employee_name, p.name AS position_name, COUNT(a.id) AS total_hadir');
         $this->db->from('employee e');
 
         // JOIN dengan attendance dan filter berdasarkan rentang tanggal
@@ -42,7 +42,7 @@ class Report_model extends CI_Model
             $this->db->where('e.id', $employee_id);
         }
 
-        $this->db->join('potition p', 'e.potition_id = p.id', 'left');
+        $this->db->join('position p', 'e.position_id = p.id', 'left');
 
         $this->db->group_by('e.id, e.name, p.name, p.id');
         $this->db->order_by('e.name', 'ASC');

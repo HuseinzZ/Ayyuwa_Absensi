@@ -35,7 +35,7 @@
                                     <tr>
                                         <td class="align-middle"><?= $i++; ?></td>
                                         <td class="align-middle"><?= $emp['name']; ?></td>
-                                        <td class="align-middle"><?= $emp['potition_id']; ?></td>
+                                        <td class="align-middle"><?= $emp['position_id']; ?></td>
                                         <td class="align-middle"><?php if ($emp['gender'] == 'M') {
                                                                         echo 'Male';
                                                                     } else {

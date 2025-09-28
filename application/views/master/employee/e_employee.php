@@ -49,16 +49,16 @@
                         <?= form_error('emp_hire_date', '<small class="text-danger">', '</small>'); ?>
                     </div>
                     <div class="form-group">
-                        <label for="emp_potition_id">Position</label>
-                        <select name="emp_potition_id" id="emp_potition_id" class="form-control">
+                        <label for="emp_position_id">Position</label>
+                        <select name="emp_position_id" id="emp_position_id" class="form-control">
                             <option value="">Select Position</option>
-                            <?php foreach ($potitions as $p) : ?>
-                                <option value="<?= $p['id']; ?>" <?= ($employee['potition_id'] == $p['id']) ? 'selected' : ''; ?>>
+                            <?php foreach ($positions as $p) : ?>
+                                <option value="<?= $p['id']; ?>" <?= ($employee['position_id'] == $p['id']) ? 'selected' : ''; ?>>
                                     <?= $p['name']; ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <?= form_error('emp_potition_id', '<small class="text-danger">', '</small>'); ?>
+                        <?= form_error('emp_position_id', '<small class="text-danger">', '</small>'); ?>
                     </div>
                     <div class="form-group">
                         <label>Current Image</label>

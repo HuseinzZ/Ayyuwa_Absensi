@@ -125,7 +125,7 @@
                         <tr>
                             <td><?= $i++; ?></td>
                             <td style="text-align: left;"><?= $row['employee_name']; ?></td>
-                            <td><?= $row['potition_name'] ?: '-'; ?></td>
+                            <td><?= $row['position_name'] ?: '-'; ?></td>
                             <td style="font-weight: bold;"><?= $row['total_hadir']; ?></td>
                         </tr>
                     <?php endforeach;

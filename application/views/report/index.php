@@ -78,7 +78,7 @@
                                             <tr>
                                                 <td style="text-align: center;"><?= $i++; ?></td>
                                                 <td><?= $row['employee_name']; ?></td>
-                                                <td style="text-align: center;"><?= $row['potition_name'] ?: '-'; ?></td>
+                                                <td style="text-align: center;"><?= $row['position_name'] ?: '-'; ?></td>
                                                 <td style="font-weight: bold; text-align: center;"><?= $row['total_hadir']; ?></td>
                                             </tr>
                                         <?php endforeach;

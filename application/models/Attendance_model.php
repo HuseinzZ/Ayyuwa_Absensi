@@ -97,10 +97,10 @@ class Attendance_model extends CI_Model
 
     public function getAttendanceReport($start_date, $end_date)
     {
-        $this->db->select('a.*, e.name AS employee_name, p.name AS potition_name');
+        $this->db->select('a.*, e.name AS employee_name, p.name AS position_name');
         $this->db->from('attendance a');
         $this->db->join('employee e', 'a.employee_id = e.id');
-        $this->db->join('potition p', 'e.potition_id = p.id', 'left');
+        $this->db->join('position p', 'e.position_id = p.id', 'left');
         $this->db->where('a.attendance_date >=', $start_date);
         $this->db->where('a.attendance_date <=', $end_date);
         $this->db->order_by('a.attendance_date', 'ASC');
