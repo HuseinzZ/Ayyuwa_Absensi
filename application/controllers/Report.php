@@ -81,10 +81,8 @@ class Report extends CI_Controller
         }
 
         $d['summary_data'] = $this->Report_model->getAttendanceSummary($start_date, $end_date, $employee_id);
-
         $d['selected_employee_name'] = 'Semua Karyawan';
 
-        // PERBAIKAN: Menggunakan metode baru untuk mengambil nama karyawan
         if (!empty($employee_id) && $employee_id !== 'all') {
             $employee_data = $this->Users_model->getEmployeeDataById($employee_id);
             if ($employee_data) {

@@ -3,15 +3,21 @@
         <div class="col-lg-12">
             <?= $this->session->flashdata('message'); ?>
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Edit Account</h6>
                 </div>
                 <div class="card-body">
-                    <form action="<?= base_url('master/e_users/' . $user['username']); ?>" method="post">
+                    <form action="<?= base_url('master/e_users/' . $user['username']); ?>" method="POST">
+
                         <div class="form-group row">
                             <label for="u_username" class="col-sm-4 col-form-label">Username</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="u_username" name="u_username" value="<?= $user['username']; ?>" readonly>
+                                <input type="text"
+                                    class="form-control"
+                                    id="u_username"
+                                    name="u_username"
+                                    value="<?= $user['username']; ?>"
+                                    readonly>
                             </div>
                         </div>
 
@@ -47,6 +53,7 @@
                                 <span class="text">Update Password</span>
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>

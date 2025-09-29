@@ -27,6 +27,7 @@ class Dashboard_model extends CI_Model
     {
         $year = date('Y');
 
+        // Hitung jumlah kehadiran per bulan di tahun berjalan
         $this->db->select("MONTH(attendance_date) as month, COUNT(id) as total");
         $this->db->where("YEAR(attendance_date)", $year);
         $this->db->where("check_in IS NOT NULL");
@@ -45,6 +46,7 @@ class Dashboard_model extends CI_Model
 
     public function getAttendanceStatusCounts()
     {
+        // Hitung jumlah kehadiran berdasarkan status_in (Present atau Late)
         $this->db->select("status_in, COUNT(id) as total");
         $this->db->where("check_in IS NOT NULL");
         $this->db->group_by("status_in");

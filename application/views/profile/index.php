@@ -1,14 +1,18 @@
 <div class="container-fluid">
+
+    <!-- Spacer Row -->
     <div class="row">
-        <div class="col-sm-10 mb-4">
-        </div>
+        <div class="col-sm-10 mb-4"></div>
     </div>
 
+    <!-- Profile Card -->
     <div class="row">
         <div class="col-sm-10 offset-sm-1">
             <div class="card shadow mb-4" style="min-height: 400px;">
                 <div class="card-body d-flex flex-column justify-content-center">
+
                     <div class="row no-gutters align-items-center">
+                        <!-- Profile Image -->
                         <div class="col-md-4 text-center mb-3 mb-md-0">
                             <img src="<?= base_url('assets/img/profile/') . $account['image']; ?>"
                                 alt="<?= $account['name'] ?>'s Profile Picture"
@@ -18,6 +22,7 @@
                             <p class="card-text text-muted"><?= $account['position_name'] ?></p>
                         </div>
 
+                        <!-- Personal Data -->
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h4 class="card-title mb-4 text-gray-800">Data Personal</h4>
@@ -30,13 +35,7 @@
                                         <tr>
                                             <th scope="row">Gender</th>
                                             <td>:
-                                                <?php
-                                                if ($account['gender'] == 'M') {
-                                                    echo 'Male';
-                                                } else {
-                                                    echo 'Female';
-                                                }
-                                                ?>
+                                                <?= ($account['gender'] == 'M') ? 'Male' : 'Female'; ?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -55,9 +54,12 @@
                                 </table>
                             </div>
                         </div>
+                        <!-- End Personal Data -->
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

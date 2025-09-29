@@ -24,8 +24,6 @@ class Attendance extends CI_Controller
         parent::__construct();
         is_logged_in();
         date_default_timezone_set('Asia/Jakarta');
-
-        // Load model
         $this->load->model('Attendance_model');
         $this->load->model('Users_model');
         $this->load->model('Menu_model');
@@ -59,7 +57,6 @@ class Attendance extends CI_Controller
     {
         $username   = $this->session->userdata('username');
         $user       = $this->Users_model->getByUsernameWithEmployeeData($username);
-
         $today       = date('Y-m-d');
         $attendance  = $this->Attendance_model->getByEmployeeAndDate($user['employee_id'], $today);
         $currentTime = date('H:i:s');
@@ -67,10 +64,10 @@ class Attendance extends CI_Controller
         // Aturan jam kerja
         $minCheckin   = "07:00:00"; // minimal bisa check-in
         $workStart    = "08:00:00"; // jam kerja resmi
-        $maxCheckin   = "08:30:00"; // lewat jam ini tidak bisa check-in
+        $maxCheckin   = "09:00:00"; // lewat jam ini tidak bisa check-in
         $minCheckout  = "16:30:00"; // minimal bisa check-out
         $workEnd      = "17:00:00"; // jam pulang resmi
-        $maxCheckout  = "24:00:00"; // lewat jam ini check-out ditutup
+        $maxCheckout  = "18:00:00"; // lewat jam ini check-out ditutup
 
         if (!$attendance) {
             // === Check-in ===

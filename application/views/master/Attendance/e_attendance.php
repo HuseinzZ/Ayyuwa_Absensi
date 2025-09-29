@@ -1,33 +1,50 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
+
+            <!-- Flash Message -->
             <?= $this->session->flashdata('message'); ?>
+
             <div class="card shadow mb-4">
+                <!-- Card Header -->
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Edit Attendance</h6>
                 </div>
+
+                <!-- Card Body -->
                 <div class="card-body">
                     <form action="<?= base_url('master/e_attendance/' . $attendance['id']); ?>" method="POST">
                         <input type="hidden" name="id" value="<?= $attendance['id']; ?>">
+
+                        <!-- Employee -->
                         <div class="form-group row">
                             <label for="employee_name" class="col-sm-4 col-form-label">Employee</label>
                             <div class="col-sm-8">
                                 <input type="hidden" name="employee_id" value="<?= $attendance['employee_id']; ?>">
-                                <input type="text" class="form-control" id="employee_name" value="<?= $attendance['employee_name']; ?>" readonly>
+                                <input type="text" class="form-control" id="employee_name"
+                                    value="<?= $attendance['employee_name']; ?>" readonly>
                             </div>
                         </div>
+
+                        <!-- Attendance Date -->
                         <div class="form-group row">
                             <label for="attendance_date" class="col-sm-4 col-form-label">Attendance Date</label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control" id="attendance_date" name="attendance_date" value="<?= set_value('attendance_date', $attendance['attendance_date']); ?>">
+                                <input type="date" class="form-control" id="attendance_date" name="attendance_date"
+                                    value="<?= set_value('attendance_date', $attendance['attendance_date']); ?>">
                             </div>
                         </div>
+
+                        <!-- Check-in -->
                         <div class="form-group row">
                             <label for="check_in" class="col-sm-4 col-form-label">Check-in Time</label>
                             <div class="col-sm-8">
-                                <input type="time" class="form-control" id="check_in" name="check_in" value="<?= set_value('check_in', $attendance['check_in']); ?>">
+                                <input type="time" class="form-control" id="check_in" name="check_in"
+                                    value="<?= set_value('check_in', $attendance['check_in']); ?>">
                             </div>
                         </div>
+
+                        <!-- Status In -->
                         <div class="form-group row">
                             <label for="status_in" class="col-sm-4 col-form-label">Status In</label>
                             <div class="col-sm-8">
@@ -38,12 +55,17 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Check-out -->
                         <div class="form-group row">
                             <label for="check_out" class="col-sm-4 col-form-label">Check-out Time</label>
                             <div class="col-sm-8">
-                                <input type="time" class="form-control" id="check_out" name="check_out" value="<?= set_value('check_out', $attendance['check_out']); ?>">
+                                <input type="time" class="form-control" id="check_out" name="check_out"
+                                    value="<?= set_value('check_out', $attendance['check_out']); ?>">
                             </div>
                         </div>
+
+                        <!-- Status Out -->
                         <div class="form-group row">
                             <label for="status_out" class="col-sm-4 col-form-label">Status Out</label>
                             <div class="col-sm-8">
@@ -54,19 +76,28 @@
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Latitude -->
                         <div class="form-group row">
                             <label for="latitude" class="col-sm-4 col-form-label">Latitude</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="latitude" name="latitude" value="<?= set_value('latitude', $attendance['latitude']); ?>">
+                                <input type="text" class="form-control" id="latitude" name="latitude"
+                                    value="<?= set_value('latitude', $attendance['latitude']); ?>">
                             </div>
                         </div>
+
+                        <!-- Longitude -->
                         <div class="form-group row">
                             <label for="longitude" class="col-sm-4 col-form-label">Longitude</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="longitude" name="longitude" value="<?= set_value('longitude', $attendance['longitude']); ?>">
+                                <input type="text" class="form-control" id="longitude" name="longitude"
+                                    value="<?= set_value('longitude', $attendance['longitude']); ?>">
                             </div>
                         </div>
+
                         <hr>
+
+                        <!-- Action Buttons -->
                         <div class="d-flex justify-content-between">
                             <a href="<?= base_url('master/attendance'); ?>" class="btn btn-secondary btn-icon-split">
                                 <span class="icon text-white"><i class="fas fa-arrow-left"></i></span>
@@ -77,9 +108,11 @@
                                 <span class="text">Update</span>
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

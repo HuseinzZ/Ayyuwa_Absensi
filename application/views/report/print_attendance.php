@@ -74,6 +74,7 @@
 <body onload="window.print()">
 
     <div class="container-fluid">
+        <!-- Header -->
         <table class="header-table">
             <tr>
                 <td style="width: 65%;">
@@ -86,7 +87,9 @@
                 <td class="right-col">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="width: 60%; font-weight: bold; text-align: right;">LAPORAN RINGKASAN ABSENSI</td>
+                            <td style="width: 60%; font-weight: bold; text-align: right;">
+                                LAPORAN RINGKASAN ABSENSI
+                            </td>
                             <td style="width: 40%;">
                                 <div class="title-box">LAPORAN ABSENSI</div>
                             </td>
@@ -96,17 +99,23 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold;">Periode</td>
-                            <td style="border-bottom: 1px solid #000;"><?= date('d/m/Y', strtotime($start_date)); ?> s/d <?= date('d/m/Y', strtotime($end_date)); ?></td>
+                            <td style="border-bottom: 1px solid #000;">
+                                <?= date('d/m/Y', strtotime($start_date)); ?> s/d
+                                <?= date('d/m/Y', strtotime($end_date)); ?>
+                            </td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold;">Filter Pegawai</td>
-                            <td style="border-bottom: 1px solid #000;"><?= $selected_employee_name ?? 'Semua Karyawan'; ?></td>
+                            <td style="border-bottom: 1px solid #000;">
+                                <?= $selected_employee_name ?? 'Semua Karyawan'; ?>
+                            </td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
 
+        <!-- Summary Section -->
         <div class="section-title">RINGKASAN JUMLAH KEHADIRAN PEGAWAI</div>
 
         <table class="table table-bordered table-sm" style="margin-bottom: 30px;">
@@ -124,23 +133,28 @@
                     foreach ($summary_data as $row): ?>
                         <tr>
                             <td><?= $i++; ?></td>
-                            <td style="text-align: left;"><?= $row['employee_name']; ?></td>
+                            <td><?= $row['employee_name']; ?></td>
                             <td><?= $row['position_name'] ?: '-'; ?></td>
                             <td style="font-weight: bold;"><?= $row['total_hadir']; ?></td>
                         </tr>
                     <?php endforeach;
                 else: ?>
                     <tr>
-                        <td colspan="4" class="text-center">Tidak ada ringkasan kehadiran ditemukan untuk periode ini.</td>
+                        <td colspan="4" class="text-center">
+                            Tidak ada ringkasan kehadiran ditemukan untuk periode ini.
+                        </td>
                     </tr>
                 <?php endif; ?>
             </tbody>
         </table>
 
-        <div class="section-title" style="border: none; margin-bottom: 5px; padding-bottom: 0;">Keterangan / Catatan:</div>
-        <div style="border: 1px solid #000; height: 100px; padding: 5px; width: 50%;">
+        <!-- Notes Section -->
+        <div class="section-title" style="border: none; margin-bottom: 5px; padding-bottom: 0;">
+            Keterangan / Catatan:
         </div>
+        <div style="border: 1px solid #000; height: 100px; padding: 5px; width: 50%;"></div>
 
+        <!-- Footer Signature -->
         <table class="footer-ttd-table">
             <tr>
                 <td>Disiapkan Oleh,</td>
@@ -165,6 +179,7 @@
             </tr>
         </table>
 
+        <!-- Print Controls -->
         <div class="no-print mt-5 text-center">
             <button onclick="window.print()" class="btn btn-primary btn-sm">Print Again</button>
             <button onclick="window.close()" class="btn btn-secondary btn-sm">Close</button>

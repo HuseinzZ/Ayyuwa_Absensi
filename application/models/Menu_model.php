@@ -5,6 +5,7 @@ class Menu_model extends CI_Model
 {
     public function getMenuByRole($role_id)
     {
+        // Mengambil daftar menu berdasarkan role_id dari tabel user_access.
         $this->db->select('user_menu.id, user_menu.menu');
         $this->db->from('user_menu');
         $this->db->join('user_access', 'user_menu.id = user_access.menu_id');
@@ -15,6 +16,7 @@ class Menu_model extends CI_Model
 
     public function getSubMenuByMenuId($menuId)
     {
+        // Mengambil daftar submenu berdasarkan menu_id yang aktif.
         $this->db->select('*');
         $this->db->from('user_submenu');
         $this->db->where('menu_id', $menuId);

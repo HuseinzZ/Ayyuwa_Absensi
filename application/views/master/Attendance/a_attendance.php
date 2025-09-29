@@ -1,20 +1,27 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
+
+            <!-- Flash Message -->
             <?= $this->session->flashdata('message'); ?>
+
             <div class="card shadow mb-4">
+                <!-- Card Header -->
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Add Attendance</h6>
                 </div>
+
+                <!-- Card Body -->
                 <div class="card-body">
                     <form action="<?= base_url('master/a_attendance'); ?>" method="POST">
+
                         <!-- Employee -->
                         <div class="form-group row">
                             <label for="employee_id" class="col-sm-4 col-form-label">Employee</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="employee_id" name="employee_id">
                                     <option value="">Select Employee</option>
-                                    <?php foreach ($employees as $employee) : ?>
+                                    <?php foreach ($employees as $employee): ?>
                                         <option value="<?= $employee['id']; ?>" <?= set_select('employee_id', $employee['id']); ?>>
                                             <?= $employee['name']; ?>
                                         </option>
@@ -28,7 +35,8 @@
                         <div class="form-group row">
                             <label for="attendance_date" class="col-sm-4 col-form-label">Attendance Date</label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control" id="attendance_date" name="attendance_date" value="<?= set_value('attendance_date'); ?>">
+                                <input type="date" class="form-control" id="attendance_date"
+                                    name="attendance_date" value="<?= set_value('attendance_date'); ?>">
                                 <?= form_error('attendance_date', '<small class="text-danger pl-3">', '</small>') ?>
                             </div>
                         </div>
@@ -37,7 +45,8 @@
                         <div class="form-group row">
                             <label for="check_in" class="col-sm-4 col-form-label">Check-in Time</label>
                             <div class="col-sm-8">
-                                <input type="time" class="form-control" id="check_in" name="check_in" value="<?= set_value('check_in'); ?>">
+                                <input type="time" class="form-control" id="check_in"
+                                    name="check_in" value="<?= set_value('check_in'); ?>">
                                 <?= form_error('check_in', '<small class="text-danger pl-3">', '</small>') ?>
                             </div>
                         </div>
@@ -59,7 +68,8 @@
                         <div class="form-group row">
                             <label for="check_out" class="col-sm-4 col-form-label">Check-out Time</label>
                             <div class="col-sm-8">
-                                <input type="time" class="form-control" id="check_out" name="check_out" value="<?= set_value('check_out'); ?>">
+                                <input type="time" class="form-control" id="check_out"
+                                    name="check_out" value="<?= set_value('check_out'); ?>">
                                 <?= form_error('check_out', '<small class="text-danger pl-3">', '</small>') ?>
                             </div>
                         </div>
@@ -76,7 +86,10 @@
                                 <?= form_error('status_out', '<small class="text-danger pl-3">', '</small>') ?>
                             </div>
                         </div>
+
                         <hr>
+
+                        <!-- Action Buttons -->
                         <div class="d-flex justify-content-between">
                             <a href="<?= base_url('master/attendance'); ?>" class="btn btn-secondary btn-icon-split">
                                 <span class="icon text-white"><i class="fas fa-arrow-left"></i></span>
@@ -87,9 +100,11 @@
                                 <span class="text">Add</span>
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
